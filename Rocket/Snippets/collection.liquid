@@ -1,0 +1,100 @@
+{% style %}
+.box-product-wrapper {
+  margin-left: 16px;
+  margin-right: 16px;
+  flex: 1 0 215px;
+}
+{% endstyle %}
+
+<section class="collection collection-2 completed">
+  <div class="container holder-collection">
+    <div class="flex -between">
+      <div class="holder-left flex -vcenter">
+        <h2 class="theme-title collection-name">{{ title }}</h2>
+        <a href="/novidades-da-semana/l" class="collection-link">Ver todos</a>
+      </div>
+    </div>
+    <div class="products-list">
+      <div class="flex -wrap">
+        {% for product in products %}
+          <p>{{ product.name }}</p>
+        {% endfor %}
+        <div class="box-product-wrapper">
+          <div class="box-product">
+            <div class="holder-image relative-tags">
+                <div class="image-ratio">
+                  <img
+                    src="https://images.yampi.io/unsafe/fit-in/275x275/filters:background_color(white):upscale()/https://images.yampi.me/assets/stores/minhasuperloja/uploads/images/capinha-espelho-flip-xiaomi-mi-a3-rose-gold-604f68b7728fa-large.jpeg"
+                    data-src="https://images.yampi.io/unsafe/fit-in/275x275/filters:background_color(white):upscale()/https://images.yampi.me/assets/stores/minhasuperloja/uploads/images/capinha-espelho-flip-xiaomi-mi-a3-rose-gold-604f68b7728fa-large.jpeg"
+                    width="auto"
+                    height="auto"
+                    alt="Capinha Espelho Flip Xiaomi Mi A3"
+                    class="-loading loaded"
+                  />
+                </div>
+              </div>
+              <div class="holder-info">
+                <div class="product-name ellipsis-multiline l2">
+                  Capinha Espelho Flip Xiaomi Mi A3
+                </div>
+                <div class="product-prices">
+                  <div class="flex -vcenter -wrap">
+                   
+                    <span class="product-actual-price price">
+                      R$ 35,00 <span class="payment-type"></span
+                    ></span>
+                  </div>
+                </div>
+
+                <button data-option-id="15443857" class="btn btn-primary buy-button">Comprar</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% javascript %}
+
+const buyButton = document.querySelectorAll('.buy-button');
+
+const addToCart = (itemId) => {
+  const url = `${window.routes.cart_base_url}/items?store_token=${window.Yampi.store_token}&cart_token=${window.Yampi.cart_token}`;
+
+  const cart = document.querySelector('side-cart') || document.querySelector('dropdown-cart');
+
+  const body = {
+    cart_token: window.Yampi.cart_token,
+    customization: {
+      [itemId]: {}
+    },
+    has_recomm: false,
+    item_metadata: [],
+    metadata: {
+      source_platform: "open_store"
+    },
+    product_option_id: [parseInt(itemId)],
+    quantity: 1,
+    skipShipment: true,
+    store_token: window.Yampi.store_token
+  }
+
+  fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  }).then(response => {
+    return response.json();
+  }).then(response => {
+    cart.cart = response.cart;
+    cart.renderCart();
+  });
+}
+
+buyButton.forEach((button) => {
+    button.addEventListener('click', (event) => addToCart(button.dataset.optionId));
+})
+
+{% endjavascript %}
+
