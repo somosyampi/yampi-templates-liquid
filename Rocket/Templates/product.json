@@ -1,0 +1,33 @@
+{ 
+  "sections": {
+    "main-product": {   
+      "type": "main-product",
+      "settings": {
+        "title": "Teste produto"
+      }
+    },
+    "description": {   
+      "type": "description",
+      "settings": {
+        "title": "Teste description"
+      }
+    },
+    "similar-products": {   
+      "type": "similar-products",
+      "settings": {
+        "title": "Você também pode gostar",
+        "desktop_layout": "carousel"
+      }
+    },
+    "combo-products": {
+      "type": "combo-products",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main-product",
+    "description",
+    "similar-products",
+    "combo-products"
+  ]
+}
