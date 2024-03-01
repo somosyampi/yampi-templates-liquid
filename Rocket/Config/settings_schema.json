@@ -1,0 +1,269 @@
+[
+  {
+    "name": "theme_info", 
+    "theme_name": "Sense",
+    "theme_version": "9.0.0",
+    "theme_author": "Shopify",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://support.shopify.com/"
+  },
+  {
+    "type": "header",
+    "content": ""
+  },
+  {
+    "name": "Fonts",
+    "settings": [
+      {
+        "type": "select",
+        "id": "fonts_texts_family",
+        "label": "Fonte dos títulos",
+        "default": "Montserrat",
+        "options": [
+          {
+            "value": "Montserrat",
+            "label": "Montserrat"
+          },
+          {
+            "value": "Nunito",
+            "label": "Nunito"
+          },
+          {
+            "value": "Open Sans",
+            "label": "Open Sans"
+          },
+          {
+            "value": "Oswald",
+            "label": "Oswald"
+          },
+          {
+            "value": "Poppins",
+            "label": "Poppins"
+          },
+          {
+            "value": "Quicksand",
+            "label": "Quicksand"
+          },
+          {
+            "value": "Roboto",
+            "label": "Roboto"
+          },
+          {
+            "value": "Roboto Slab",
+            "label": "Roboto Slab"
+          },
+          {
+            "value": "Rubik",
+            "label": "Rubik"
+          },
+          {
+            "value": "Taviraj",
+            "label": "Taviraj"
+          },
+          {
+            "value": "Work Sans",
+            "label": "Work Sans"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "fonts_texts_size",
+        "label": "Tamanho da fonte",
+        "default": "14px"
+      },
+      {
+        "type": "select",
+        "id": "fonts_titles_family",
+        "label": "Fonte dos textos",
+        "default": "Montserrat",
+        "options": [
+          {
+            "value": "Montserrat",
+            "label": "Montserrat"
+          },
+          {
+            "value": "Nunito",
+            "label": "Nunito"
+          },
+          {
+            "value": "Rubik",
+            "label": "Rubik"
+          },
+          {
+            "value": "Taviraj",
+            "label": "Taviraj"
+          },
+          {
+            "value": "Work Sans",
+            "label": "Work Sans"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "fonts_titles_weight",
+        "label": "Peso das fontes",
+        "default": "regular",
+        "options": [
+          {
+            "value": "regular",
+            "label": "Leve"
+          },
+          {
+            "value": "medium",
+            "label": "Normal"
+          },
+          {
+            "value": "bold",
+            "label": "Negrito"
+          },
+          {
+            "value": "black",
+            "label": "Extra"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "fonts_titles_uppercase",
+        "label": "Letras em caixa alta",
+        "default": "false"
+      },
+      {
+        "type": "text",
+        "id": "color_general_primary",
+        "default": "#111111"
+      },
+      {
+        "type": "text",
+        "id": "color_general_secundary",
+        "default": "#FF0505"
+      },
+      {
+          "type": "text",
+          "id": "color_btn_primary_background",
+          "default": "#000000"
+      },
+      {
+          "type": "text",
+          "id": "color_btn_primary_background_rgb",
+          "default": "0, 0, 0"
+      },
+      {
+          "type": "text",
+          "id": "color_btn_primary_background_outline",
+          "default": "#000000"
+      },
+      {
+          "type": "text",
+          "id": "color_btn_primary_text",
+          "default": "#FFFFFF"
+      },
+      {
+          "type": "text",
+          "id": "color_btn_secundary_background",
+          "default": "#DDA3A3"
+      },
+      {
+          "type": "text",
+          "id": "color_btn_secundary_background_outline",
+          "default": "#DDA3A3"
+      },
+      {
+          "type": "text",
+          "id": "color_btn_secundary_text",
+          "default": "#FFFFFF"
+      },
+      {
+          "type": "text",
+          "id": "discount_tag_background",
+          "default": "#FF0000"
+      },
+      {
+          "type": "text",
+          "id": "discount_tag_color",
+          "default": "#FFFFFF"
+      },
+      {
+          "type": "text",
+          "id": "fonts_buttons_uppercase",
+          "default": "uppercase"
+      },
+      {
+          "type": "text",
+          "id": "theme_border_radius",
+          "default": "5px"
+      },
+      {
+          "type": "text",
+          "id": "label_radius",
+          "default": "5px"
+      },
+      {
+          "type": "text",
+          "id": "topbar_show_whatsapp",
+          "default": true
+      },
+      {
+          "type": "text",
+          "id": "topbar_show_phone",
+          "default": true
+      },
+      {
+          "type": "text",
+          "id": "empty_cart_helper_text",
+          "default": "5% de desconto em compras à vista no Pix"
+      },
+      {
+          "type": "text",
+          "id": "empty_cart_text_button",
+          "default": "Iniciar compra"
+      },
+      {
+          "type": "text",
+          "id": "color_tag_background",
+          "default": "#FF0000"
+      },
+      {
+          "type": "text",
+          "id": "color_tag_text",
+          "default": "#FFFFFF"
+      },
+      {
+          "type": "text",
+          "id": "slides_border_radius",
+          "default": "5px"
+      },
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Estilo do carrinho",
+        "default": "dropdown",
+        "options": [
+          {
+            "value": "dropdown",
+            "label": "Suspenso"
+          },
+          {
+            "value": "side_cart",
+            "label": "Barra lateral"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "show_cart_savings",
+        "label": "Mostrar total economizado",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_product_cart_savings",
+        "label": "Mostrar selo R$ mais barato",
+        "default": false
+      }
+    ]
+  }
+]
+
