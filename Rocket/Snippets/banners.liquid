@@ -1,0 +1,24 @@
+{{ 'banners.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'carousel.js' | asset_url }}" defer="defer"></script>
+<div class="carousel-container">
+  <slider-component>
+    <div class="carousel">
+    {% for banner in banners %}
+        <div class="banner-item">
+          <a href="{{ banner.link }}">
+            <img src="{{ banner.image_url }}" alt="{{ banner.title }}" width="500" height="300">
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+    
+    <div class="carousel-controls">
+      <button class="prev-button">Previous</button>
+      <button class="next-button">Next</button>
+    </div>
+  </slider-component>
+</div>
+
+</div>
+
