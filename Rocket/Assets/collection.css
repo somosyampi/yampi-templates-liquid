@@ -1,0 +1,27 @@
+.collection .holder-flags {
+	 margin: 1px 0;
+}
+
+ .collection-name {
+	 line-height: 1;
+	 color: var(--black-dark);
+}
+
+ .collection-link {
+	 margin-left: 18px;
+	 padding-top: 3px;
+	 min-width: 80px;
+	 font-size: var(--font-14);
+	 line-height: 1.1428;
+	 color: var(--black-medium);
+}
+
+ .holder-collection {
+	 overflow: hidden;
+	 padding-top: 8px;
+}
+
+ .holder-collection .holder-left {
+	 margin-bottom: 28px;
+}
+ 
