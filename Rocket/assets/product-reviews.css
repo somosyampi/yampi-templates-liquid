@@ -1,0 +1,120 @@
+.product-reviews .holder-product-reviews-title {
+  border-radius: var(--theme-border-radius);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.product-reviews .holder-product-reviews-title:not(.single) {
+  height: 76px;
+  background-color: var(--default-background-color);
+}
+
+.product-reviews .holder-product-reviews-title:not(.single) .theme-title {
+  cursor: pointer;
+}
+
+.product-reviews .holder-product-reviews-title:not(.single) .titles .-title {
+  line-height: 73px;
+}
+
+.product-reviews .holder-product-reviews-title.single {
+  height: auto;
+  border: solid 1px var(--default-background-color);
+  border-bottom: 0;
+}
+
+.product-reviews .holder-product-reviews-title.single+.tab-content {
+  border-top: 0;
+}
+
+.product-reviews .holder-product-reviews-title.single .titles {
+  margin-top: 67px;
+  line-height: 22px;
+}
+
+.product-reviews .active-slider {
+  background-color: #fff;
+  height: 66px;
+  width: calc(50% - 5px);
+  position: absolute;
+  top: 5px;
+  left: var(--active-left);
+  transition: left 0.3s;
+  box-shadow: 0px 0px 4px rgba(34, 34, 34, 0.05);
+  border-radius: var(--theme-border-radius);
+  z-index: 0;
+}
+
+.product-reviews .titles {
+  z-index: 1;
+}
+
+.product-reviews .titles .theme-title {
+  flex: 1;
+  text-align: center;
+  color: var(--black-light);
+  transition: color 0.3s;
+  user-select: none;
+}
+
+.product-reviews .titles .theme-title:hover,
+.product-reviews .titles .theme-title.active {
+  color: var(--black-dark);
+}
+
+.product-reviews .titles .theme-title .-quantity:before {
+  content: "(";
+}
+
+.product-reviews .titles .theme-title .-quantity:after {
+  content: ")";
+}
+
+.product-reviews .tab-content {
+  text-align: center;
+  border: solid 1px var(--default-background-color);
+  padding-bottom: 56px;
+  border-bottom-left-radius: var(--theme-border-radius);
+  border-bottom-right-radius: var(--theme-border-radius);
+}
+
+.product-reviews .tab-content:not(.active) {
+  display: none;
+}
+
+.product-reviews .btn-secundary:not(.-success) {
+  margin: 48px 0;
+}
+
+#modal-question .btn,
+#modal-review .btn {
+  margin-top: 24px;
+  margin-bottom: 0px;
+}
+
+#modal-review [class*='icon-star'] {
+  cursor: pointer;
+  margin: 0px 3px 6px;
+  width: 26px;
+  height: 26px;
+}
+
+@media screen and (max-width: 700px) {
+
+  #modal-review [class*='icon-star'] {
+    margin-right: 5px;
+    width: 31px;
+    height: 31px;
+  }
+}
+
+#modal-question .custom-margin,
+#modal-review .custom-margin {
+  margin-top: 13px;
+}
+
+#modal-question .alert,
+#modal-review .alert {
+  margin-top: 24px;
+  font-size: 12px;
+}

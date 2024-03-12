@@ -22,12 +22,22 @@
     "combo-products": {
       "type": "combo-products",
       "settings": {}
+    },
+    "product-video": {
+      "type": "product-video",
+      "settings": {}
+    },
+    "product-reviews": {
+      "type": "product-reviews",
+      "settings": {}
     }
   },
   "order": [
     "main-product",
     "description",
+    "product-video",
+    "combo-products",
     "similar-products",
-    "combo-products"
+    "product-reviews"
   ]
 }

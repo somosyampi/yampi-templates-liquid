@@ -47,6 +47,11 @@
   transition: opacity var(--modal-transition-time);
 }
 
+.modal .theme-title {
+    font-size: 30px;
+    line-height: 34px;
+}
+
 .modal .table-title {
   margin-top: 4px;
   margin-bottom: 12px;
@@ -55,8 +60,7 @@
 }
 
 .modal .close-modal {
-  margin-top: -10px;
-  margin-right: -20px;
+  margin-top: -6px;
   cursor: pointer;
   align-self: flex-start;
 }
@@ -81,4 +85,59 @@
 #modal-installments table {
  font-size: 14px;
 }
- 
+
+#modal-product-zoom .modal-body {
+  max-width: unset;
+  max-height: 90%;
+  width: auto;
+  overflow: auto;
+}
+
+#modal-product-zoom .modal-body .flex.-between {
+  position: sticky;
+  top: 0;
+}
+
+#modal-product-zoom .close-modal {
+  margin-left: auto;
+  transform: translateX(calc(100% + 5px));
+}
+
+#modal-product-zoom .modal-content {
+  overflow: auto;
+  margin-top: -30px;
+}
+
+#modal-product-zoom img {
+  width: 1000px;
+  height: auto;
+}
+
+@media only screen and (max-width: 700px) {
+  .modal-body {
+    padding: 30px 20px;
+  }
+
+  .modal .theme-title {
+    width: 80%;
+    font-size: 25px;
+    line-height: 28px;
+  }
+
+  .modal .custom-select-image-prefix {
+    width: 100%;
+  }
+
+  #modal-product-zoom .modal-body {
+    width: 100vw;
+  }
+
+  #modal-product-zoom img {
+    width: 100%;
+  }
+
+  #modal-product-zoom .close-modal {
+    transform: translate(14px, -9px);
+  }
+
+}

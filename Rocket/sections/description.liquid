@@ -1,3 +1,5 @@
+{{ "product-description.css" | asset_url | stylesheet_tag }}
+
 <section class="product-specifications">
   {% if product.texts.data.description.size > 0 %} 
     <div class="container">

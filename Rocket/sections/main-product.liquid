@@ -5,17 +5,6 @@
 
 {% assign thumbor_url = 'https://images.yampi.io/unsafe/fit-in/75x75/filters:background_color(white):upscale()/' %}
 
-<script>
-  window.skus = {{ product.skus.data | json }};
-  window.selectedSku = window.skus[0] || null;
-</script>
-
-<div>
-  {% for combo in product.combos %}
-    {{ combo.discount_value }}
-  {% endfor %}
-</div>
-
 <section class="main-product-holder container">
   <div class="main-product-images">
     <div class="main-product-images-nav carousel-thumbs">
@@ -25,6 +14,12 @@
             <img src="{{ image.url | prepend: thumbor_url }}" class="thumb-image" />
           </li>
         {% endfor %}
+        <smooth-scroller class="smooth-element" data-target="#holder-main-product-video">
+          <div class="video-thumb">
+            {% render 'icon-video' %}
+            <div class="-text">VÍDEO</div>
+          </div>
+        </smooth-scroller>
       </ul>
     </div>
     <div class="main-product-image">
@@ -32,9 +27,9 @@
         <div class="carousel">
           {% for image in product.images.data %}
             <div class="carousel-item">
-              <div class="zoom-on-hover">
+              <modal-opener class="zoom-on-hover" data-modal="#modal-product-zoom">
                 <img src="{{ image.url }}" class="normal" />
-              </div>
+              </modal-opener>
             </div>
           {% endfor %}
         </div>
@@ -135,43 +130,42 @@
     </div>
 
     <div class="product-customizations">
-      {% if product.has_variations %}
-        <select-sku>
-          <div class="sku-select">
-            <p class="helper-text">Selecione uma opção</p>
-            {% for variation in product.variations.data %}
-              <div class="sku-option">
-                <label for="{{ variation.id }}-{{ variation.name }}">
-                  {{ variation.name }}
-                </label>
-            
-                <div class="custom-select">
-                  <select
-                    id="{{ variation.id }}-{{ variation.name }}"
-                    name="{{ variation.id }}-{{ variation.name }}"
-                  >
-                    <option value="0" selected>Selecionar...</option>
-                    {% for option in variation.values.data %}
-                      <option value="{{ option.id }}">{{ option.value }}</option>
-                    {% endfor %}
-                  </select>
-                  {% render 'icon-arrow' %}
-                </div>
-              </div>
-            {% endfor %}
-          </div>
-        </select-sku>
-
-        {% javascript %}
-          const productSelect = document.querySelector('.main-product-info select-sku');
-          productSelect.skus = {{ product.skus.data | json }}
-        {% endjavascript %}
-      {% endif %}
       {% if product.simple and product.skus.data[0].customizations.data.size > 0 %}
         <product-customization>
         </product-customization>
       {% endif %}
       <product-form>
+        {% if product.has_variations %}
+          <select-sku>
+            <div class="sku-select">
+              <p class="helper-text">Selecione uma opção</p>
+              {% for variation in product.variations.data %}
+                <div class="sku-option">
+                  <label for="{{ variation.id }}-{{ variation.name }}">
+                    {{ variation.name }}
+                  </label>
+              
+                  <div class="custom-select">
+                    <select
+                      id="{{ variation.id }}-{{ variation.name }}"
+                      name="{{ variation.id }}-{{ variation.name }}"
+                    >
+                      <option value="0" selected>Selecionar...</option>
+                      {% for option in variation.values.data %}
+                        <option value="{{ option.id }}">{{ option.value }}</option>
+                      {% endfor %}
+                    </select>
+                    {% render 'icon-arrow' %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </select-sku>
+  
+          {% javascript %}
+            document.querySelector('.main-product-info select-sku').skus = {{ product.skus.data | json }}
+          {% endjavascript %}
+        {% endif %}
         <form>
           <div class="main-product-buy-button-holder flex">
             {% if section.settings.show_quantity_selector %}
@@ -262,6 +256,19 @@
         </div>
       </div>
     </modal-dialog>
+
+    <zoom-modal id="modal-product-zoom" class="modal" tabindex="-1">
+      <div class="modal-body">
+        <div class="flex -between">
+          <div class="close-modal">
+            {% render 'icon-close' %}
+          </div>
+        </div>
+        <div class="modal-content">
+          <img src="" />
+        </div>
+      </div>
+    </zoom-modal>
   </div>
 </section>
 

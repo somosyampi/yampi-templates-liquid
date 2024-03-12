@@ -116,7 +116,6 @@
   text-transform: uppercase;
 }
 
-
 .holder-account .dropdown {
   right: 50%;
   top: 49px;
@@ -144,12 +143,100 @@
   line-height: var(--font-12);
 }
 
+.buy-together-cart-group__container {
+  position: relative;
+  border: 1px dashed var(--black-medium);
+  box-sizing: border-box;
+  border-radius: 5px;
+  padding: 16px 12px 12px;
+  margin: 11px 1px 21px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 450px) {
+ .buy-together-cart-group__container {
+   margin: 5px 1px 21px;
+  }
+}
+
+.buy-together-cart-group-title {
+ display: block;
+ width: fit-content;
+ margin: -23px -20px 0 12px;
+ background-color: var(--white);
+ font-weight: var(--font-bold);
+ font-size: var(--font-11);
+ line-height: 13px;
+ color: #222;
+ text-align: center;
+ padding: 0 3px;
+}
+
+.buy-together-total-value {
+  display: flex;
+  flex-flow: column nowrap;
+  order: 1;
+  background-color: var(--front-end-f5f5f5);
+  padding: 8px 0 7px;
+  border-radius: 5px;
+}
+
+.buy-together-total-value .row {
+  display: flex;
+  justify-content: center;
+}
+
+.buy-together-total-value .text {
+  display: inline-block;
+  text-align: center;
+  margin: 0 2px;
+}
+
+.buy-together-total-value .discount-original-value {
+  color: var(--black-light);
+  text-decoration: line-through;
+  font-size: var(--font-12);
+  line-height: 14px;
+}
+
+.buy-together-total-value .after-discount-value {
+  color: var(--color-general-primary);
+  font-size: var(--font-14);
+  line-height: 14px;
+  font-weight: var(--font-bold);
+}
+
+.buy-together-total-value .discount-percent {
+  font-size: var(--font-12);
+  line-height: 14px;
+  color: var(--black-dark);
+}
+
+.side-cart-remove {
+  position: absolute;
+  top: 6px;
+  right: 12px;
+  cursor: pointer;
+  width: 48px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.side-cart-remove .remove-text {
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 9px;
+  color: var(--black-light);
+  margin: -10px 0;
+}
+
 .product-cart-box__container {
   display: flex;
   flex-flow: column;
   margin: 21px 0 21px 0;
   width: 100%;
-  max-width: calc(var(--width) - 2px - var(--side-padding)*2);
 }
 
 .product-cart-box__container:first-child {

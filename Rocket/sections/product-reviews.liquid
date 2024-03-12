@@ -1,0 +1,139 @@
+{{ "product-reviews.css" | asset_url | stylesheet_tag }}
+<script src="{{ 'product-reviews.js' | asset_url }}" defer="defer"></script>
+
+<section class="product-reviews container">
+  <tab-component>
+    <div class="holder-product-reviews-title tabs relative">
+      <div class="active-slider" style="--active-left: 5px;"></div>
+      <div class="titles flex -between relative">
+        <div class="tab theme-title active" data-index='0'>
+          <span class="-title">Avaliações</span> <span class="-quantity">0</span>
+        </div>
+        <div class="tab theme-title" data-index='1'>
+          <span class="-title">Dúvidas</span> <span class="-quantity">0</span>
+        </div>
+      </div>
+    </div>
+    <div class="tab-content active">
+      <div class="holder-reviews">
+        {% if product.reviews.size > 0 %}
+          {% for review in product.reviews %}
+            {{ review.message }}
+          {% endfor %}
+        {% else %}
+          <modal-opener data-modal="#modal-review">
+            <div class="btn btn-secundary">Avaliar produto</div>  
+          </modal-opener>
+          
+          <div class="alert -yellow">
+            Esse produto ainda não possui nenhuma avaliação.
+            <modal-opener data-modal="#modal-review">
+              <b class="link-alike">Seja o primeiro a avaliar</b>
+            </modal-opener>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="tab-content" show-average-reviews="true">
+      <div class="holder-questions">
+        {% if product.comments.size > 0 %}
+          {% for comment in product.comments %}
+            {{ comment.message }}
+          {% endfor %}
+        {% else %}
+          <div class="btn btn-secundary">Perguntar</div>
+          <div class="alert -yellow">
+            Esse produto ainda não possui nenhuma dúvida.
+            <b class="link-alike">Seja o primeiro a perguntar</b>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </tab-component>
+
+  <modal-dialog id="modal-review" class="modal" tabindex="-1">
+      <div class="modal-body">
+        <div class="flex -between">
+          <div class="modal-header">
+            <div class="theme-title">
+              Avalie o produto
+            </div>
+            <div class="subtitle">
+              {{ product.name }}
+            </div>
+          </div>
+          <div class="close-modal">
+            {% render 'icon-close' %}
+          </div>
+        </div>
+        <div class="modal-content">
+          <form action="/submit-review" method="POST">
+            <label for="review-rating">QUANTIDADE DE ESTRELAS</label>
+            <div class="holder-stars">
+              {% for i in (1..5) %}
+                {% render 'icon-star-gold' %}
+              {% endfor %}
+            </div>
+        
+            <label for="review-name" class="custom-margin">NOME</label>
+            <input
+              id="review-name"
+              type="text"
+              name="name"
+              placeholder="Ex.: Adriana"
+              maxlength="60"
+            />
+        
+            <label for="review-email">E-MAIL</label>
+            <input
+              id="review-email"
+              type="email"
+              name="email"
+              placeholder="Ex.: adriana@gmail.com"
+            />
+        
+            <label for="review-message">AVALIAÇÃO</label>
+            <textarea
+              id="review-message"
+              type="text"
+              name="review"
+              placeholder="Escreva o que você achou deste produto..."
+              rows="4"
+              maxlength="250"
+            ></textarea>
+        
+            <div class="alert -yellow">
+              • Sua avaliação está sujeita à aprovação por nossa equipe <br />
+              • Seus dados não serão divulgados <br />
+              • Não publicaremos termos ofensivos ou de baixo calão.
+            </div>
+        
+            <button class="loader-button btn -block btn-secundary" type="submit">Enviar avaliação</button>
+          </form>
+        </div>
+      </div>
+    </modal-dialog>
+</section>
+
+{% schema %}
+{
+  "name": "Seção de descrição de produto",
+  "settings": [
+    {
+      "type": "text",
+      "id": "description_title",
+      "default": "Descrição do produto"
+    },
+    {
+      "type": "text",
+      "id": "measures_title",
+      "default": "Medidas"
+    },
+    {
+      "type": "text",
+      "id": "specifications_title",
+      "default": "Especificações técnicas"
+    }
+  ]
+}
+{% endschema %}

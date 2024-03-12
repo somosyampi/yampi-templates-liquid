@@ -27,16 +27,24 @@ class MiniCart extends HTMLElement {
 
   renderCart() {
     let template = null;
+    const cartQtd = document.querySelector('.cart-quantity');
+    
     
     if (!this.cart?.items?.length) {
       template = document.getElementById("empty-cart").innerHTML;
       this.renderEmptyCart();
+      cartQtd.innerHTML = 0;
     } else {
-      const cartQtd = document.querySelector('.cart-quantity');
       cartQtd.innerHTML = this.cart.items.reduce((acc, item) => acc + item.quantity, 0);
       
       template = this.getCartTemplate(this.cart);
       this.cartElement.innerHTML = template;
+
+      if (Object.keys(this.combos).length) {
+        for (const kit_id in this.combos) {
+          this.getCombo(kit_id, this.combos[kit_id]);
+        }
+      }
       
       this.getCartItemsTemplate(this.cart.items);
 
@@ -58,7 +66,8 @@ class MiniCart extends HTMLElement {
     })
     .then(data => {
       this.cart = data.cart;
-
+      this.combos = groupBy(this.cart.items.filter(item => item.kit_id), 'kit_id');
+      
       this.renderCart();
     });
   }
@@ -117,7 +126,7 @@ class MiniCart extends HTMLElement {
       </div>
     `;
 
-    items.forEach(item => {
+    items.filter(item => !item.kit_id).forEach(item => {
       const templateWithItem = renderTemplate(template, {product: item});
       const itemElement = htmlToElement(templateWithItem);
 
@@ -138,6 +147,85 @@ class MiniCart extends HTMLElement {
       this.createVariationsLine(item.id, item.grids);
       this.createCustomizationsLine(item.id, item.customizations.filter(customization => customization.selected_value != null));
     });
+  }
+
+  getCombo(kitId, comboProducts) {
+    let { products, ...combo } = JSON.parse(localStorage.getItem('comboCartGroup'))[kitId];
+    combo.products = comboProducts;
+
+    console.log(combo);
+    
+    const originalPrice = combo.products.reduce((total, item) => total + Number(item.price), 0);
+
+    const finalPrice = combo.discount_type === 'p'
+      ? (1 - combo.discount_value / 100) * originalPrice
+      : originalPrice - combo.discount_value;
+
+    const discount = originalPrice - finalPrice;
+    
+    const container = `
+      <div class="buy-together-cart-group__container" data-combo-id="${kitId}">
+        <div class="buy-together-cart-group-title">Compre Junto</div>
+        <remove-combo class="side-cart-remove">
+          <div>
+              <i class="icon icon-trash"></i>
+          </div>
+          <div class="remove-text">Remover Tudo</div>
+        </remove-combo>
+          
+        <div class="buy-together-total-value">
+          <div class="row">
+            <div class="text discount-original-value">${numberToBRL(originalPrice)}</div>
+            <div class="text after-discount-value">${numberToBRL(finalPrice)}</div>
+          </div>
+          <div class="row discount-percent">Desconto (-${numberToBRL(discount)})</div>
+        </div>
+      </div>
+    `;
+
+    const getProductElement = (product) => {
+      const template = `
+        <div class="product-cart-box__container--combo" item-id="${product.id}">
+          <div class="product-cart-box__metadata">
+            <div class="product-cart-box__holder-image">
+              <div class="image-ratio">
+                <img
+                  src="${product.small}"
+                  width="auto"
+                  height="auto"
+                  alt="Imagem do Produto"
+                />
+              </div>
+            </div>
+            <div class="product-cart-box__text--holder-info">
+              <div class="product-cart-box__text--product-name">${product.name}</div>
+              <div class="product-cart-box__text--product-extra">
+                <ul>
+                  ${product.grids.map(grid => {
+                    return `
+                      <li class="product-cart-box__text--sku">
+                        ${ grid.name }: ${ grid.value }
+                      </li>
+                    `
+                  }).join('')}
+                </ul>
+              </div>
+              <div class="product-cart-box__text--quantity">
+                Qtd.: ${product.quantity}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      return htmlToElement(template);
+    };
+
+    const renderedContainer = htmlToElement(container);
+
+    combo.products.forEach(product => renderedContainer.appendChild(getProductElement(product)));
+
+    document.querySelector('#mini-cart .cart-products-list').appendChild(renderedContainer);
   }
 
   createVariationsLine(itemId, variations) {
@@ -243,6 +331,52 @@ class MiniCart extends HTMLElement {
 
 customElements.define('mini-cart', MiniCart);
 
+class RemoveCombo extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    this.addEventListener('click', this.handleClick.bind(this));
+  }
+
+  handleClick(event) {
+    const closestProductCartItem = this.parentElement.querySelector('.product-cart-box__container--combo');
+    const product_option_id = parseInt(closestProductCartItem.getAttribute('item-id'));
+    const delete_url = `${window.routes.cart_base_url}/items/${product_option_id}/delete?store_token=${window.Yampi.store_token}&cart_token=${window.Yampi.cart_token}`;
+
+    const body = JSON.stringify({
+      product_option_id,
+      skipShipment: true,
+      store_token: window.Yampi.store_token,
+      cart_token: window.Yampi.cart_token,
+      metadata:{
+        source_platform: "open_store"
+      }
+    });
+    
+    // addLoadingToCartLine(product_option_id);
+    
+    fetch(delete_url, 
+      { 
+        method: 'DELETE',
+        body 
+      }
+    ).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    }).then(response => {
+      const cart = document.querySelector('dropdown-cart') || document.querySelector('side-cart');
+      cart.cart = response.cart;
+      cart.combos = groupBy(cart.cart.items.filter(item => item.kit_id), 'kit_id');
+      cart.renderCart();
+    });
+  }
+}
+
+customElements.define('remove-combo', RemoveCombo);
+
 class DropdownCart extends MiniCart {
   getCartTemplate(cart) {
     const template = `
@@ -301,7 +435,7 @@ class DropdownCart extends MiniCart {
               <span class="side-cart-total-text">SUBTOTAL</span>
               <span
                   class="side-cart-subtotal-after-discounts"
-              >{{ cart.prices.subtotal_formated }}
+              >{{ cart.prices.total_formated }}
               </span>
           </div>
         </div>
@@ -349,7 +483,7 @@ class SideCart extends MiniCart {
               <div class="side-cart-total-value -subtotal">
                 <div class="side-cart-row">
                   <span class="side-cart-total-text">SUBTOTAL</span>
-                  <span class="side-cart-subtotal-after-discounts">${cart.prices.subtotal_formated} </span>
+                  <span class="side-cart-subtotal-after-discounts">${cart.prices.total_formated} </span>
                 </div>
               </div>
               <a 
@@ -479,4 +613,3 @@ const removeLoadingFromCartLine = (itemId) => {
   const element = document.querySelector(`.product-cart-box__container.item-${itemId} quantity-selector`);
   element.classList.remove('disabled');
 }
-

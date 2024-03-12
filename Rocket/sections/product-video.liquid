@@ -1,0 +1,35 @@
+{{ 'product-video.css' | asset_url | stylesheet_tag }}
+
+<section id="holder-main-product-video" class="video">
+  <div class="container -remove-overflow">
+    <div class="theme-title">{{ section.settings.title }}</div>
+    <div class="yt-video">
+      <iframe 
+        src="{{ product.video | youtube_url }}" 
+        frameborder="0" 
+        allowfullscreen="allowfullscreen" 
+        allow="accelerometer;
+                  autoplay;
+                  clipboard-write;
+                  encrypted-media;
+                  gyroscope;
+                  picture-in-picture"
+      >
+      </iframe>            
+    </div>
+</div>
+</section>
+
+{% schema %}
+{
+  "name": "Seção de compre junto",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título da seção",
+      "default": "Vídeo"
+    }
+  ]
+}
+{% endschema %}

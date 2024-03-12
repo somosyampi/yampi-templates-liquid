@@ -1,6 +1,10 @@
 {{ 'combo-products.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'combos.js' | asset_url }}" defer="defer"></script>
 
+<script>
+  const comboByKitId = {};
+</script>
+
 <section class="buy-together container">
   <div class="theme-title">{{ section.settings.title }}</div>  
   {% for combo in combos %}
@@ -43,6 +47,9 @@
                 {% endfor %}
               </div>
             </select-sku>
+            {% javascript %}
+              document.querySelector('.buy-together-product[data-sku="{{product.sku_id}}"] select-sku').skus = {{ product.skus.data | json }}
+            {% endjavascript %}
           {% endif %}
         </div>
         {% if forloop.last %}
@@ -58,17 +65,20 @@
       <div class="buy-together-total">
         <div class="total-value">
           Valor total:
-          <span class="old-price"> R$&nbsp;782,57 </span>
+          <span class="old-price"></span>
         </div>
-        <div class="final-value price">
-          R$&nbsp;743,44 <br />
-          <span class="payment-type"> no pix</span>
-        </div>
-        <div class="discount-value">Economize R$&nbsp;39,13</div>
+        <div class="final-value price"></div>
+        <div class="discount-value"></div>
         {% render 'buy-button' %}
       </div>
     </combo-product>
+    {% javascript %}
+      comboByKitId[{{combo.id}}] = {{ combo | json }};
+    {% endjavascript %}
   {% endfor %}
+  {% javascript %}
+    localStorage.setItem('comboCartGroup', JSON.stringify(comboByKitId));
+  {% endjavascript %}
 </section>
 
 {% schema %}
@@ -96,4 +106,3 @@
   ]
 }
 {% endschema %}
-

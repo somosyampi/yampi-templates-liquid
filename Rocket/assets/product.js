@@ -356,7 +356,7 @@ class SelectSku extends HTMLElement {
   handleChange(event) {
     event.target.classList.remove('error');
     this.selectedValues = Array.from(this.selects).map(select => select.value);
-    this.selectedSku = window.skus.find(sku => {
+    this.selectedSku = this.skus.find(sku => {
         const combination = sku.combinations;
         return this.selectedValues.sort(compareNumber).join('-') === combination;
     });

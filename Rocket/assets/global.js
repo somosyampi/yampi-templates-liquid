@@ -165,8 +165,11 @@ class ModalDialog extends HTMLElement {
     });
   }
 
-  openModal() {
+  openModal(source = undefined) {
     this.classList.add('active');
+    if (source) {
+      this.source = source;
+    }
   }
 
   closeModal() {
@@ -176,14 +179,33 @@ class ModalDialog extends HTMLElement {
 
 customElements.define('modal-dialog', ModalDialog);
 
+class ZoomModal extends ModalDialog {
+  constructor() {
+    super();
+  }
+
+  openModal(source = undefined) {
+    this.classList.add('active');
+    if (source) {
+      this.source = source;
+    }
+
+    const img = this.querySelector('img');
+
+    img.src = this.source.src;
+  }
+}
+
+customElements.define('zoom-modal', ZoomModal);
+
 class ModalOpener extends HTMLElement {
   constructor() {
     super();
 
-    this.addEventListener('click', () => {
+    this.addEventListener('click', (event) => {
       const modal = document.querySelector(this.getAttribute('data-modal'));
       if (modal) {
-        modal.openModal();
+        modal.openModal(event.target);
       }
     });
   }
@@ -232,3 +254,23 @@ class CollapseItem extends HTMLElement {
 }
 
 customElements.define('collapse-item', CollapseItem);
+
+class SmoothScroller extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    this.target = document.querySelector(this.dataset.target);
+    this.addEventListener('click', this.handleClick.bind(this));
+  }
+
+  handleClick(event) {
+    window.scroll({
+      top: this.target.offsetTop,
+      behavior: "smooth",
+    });
+  }
+}
+
+customElements.define('smooth-scroller', SmoothScroller);
