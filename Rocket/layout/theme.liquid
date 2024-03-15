@@ -67,7 +67,8 @@
       cart_token: getCookie('cart_token'),
       store_token: '{{ merchant.checkout.store_token }}',
       merchant_alias: '{{ merchant.alias }}',
-      api_domain: 'http://api.test/v2/{{ merchant.alias }}/public'
+      api_domain: 'http://api.test/v2/{{ merchant.alias }}',
+      api_domain_public: 'http://api.test/v2/{{ merchant.alias }}/public'
     }
     
     if (!window.Yampi.cart_token) {

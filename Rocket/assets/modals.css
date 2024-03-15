@@ -52,6 +52,14 @@
     line-height: 34px;
 }
 
+.modal .subtitle {
+  margin-top: 4px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  line-height: 26.5px;
+  color: var(--black-medium);
+}
+
 .modal .table-title {
   margin-top: 4px;
   margin-bottom: 12px;
@@ -122,6 +130,12 @@
     width: 80%;
     font-size: 25px;
     line-height: 28px;
+  }
+
+  .modal .subtitle {
+    font-size: 13px;
+    line-height: 17px;
+    word-break: break-all;
   }
 
   .modal .custom-select-image-prefix {

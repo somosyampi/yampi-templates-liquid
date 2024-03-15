@@ -66,7 +66,7 @@ class BaseInstallments extends HTMLElement {
       return;
     }
     
-    const route = `${window.Yampi.api_domain}/catalog/products/${productId}/installments?amount=${amount}&brand=${brand}`; 
+    const route = `${window.Yampi.api_domain_public}/catalog/products/${productId}/installments?amount=${amount}&brand=${brand}`; 
     
     fetch(route)
     .then(response => {

@@ -14,6 +14,19 @@
     overflow-y: scroll;
   }
 
+  body.active-menu .over-background {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  table td, table th {
+    padding: 11px 10px 10px;
+    font-size: var(--font-12);
+  }
+
+  section:not(.section-header):not(.main-banner):not(.category-content):not(.main-product-holder):not(.section-pages) {
+    margin-top: 50px;
+  }
   input, textarea {
     font-size: var(--font-13);
   }
@@ -77,6 +90,22 @@
     font-size: var(--font-11);
     line-height: 13px;
   }
+
+  .dropdown-holder:hover > .dropdown {
+  	opacity: 1;
+  	visibility: visible;
+  	transition: visibility 0s, opacity 0s linear;
+  }
+}
+
+@media (max-width: 576px) {
+  .btn-modal-primary {
+		width: 146px;
+	}
+
+  .btn-modal-secundary {
+		width: 103px;
+	}
 }
 
 @media only screen and (max-width: 370px) {

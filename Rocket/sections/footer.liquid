@@ -1,0 +1,16 @@
+# # {{ "footer.css" | asset_url | stylesheet_tag }}
+# <script src="{{ 'footer.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Seção do rodapé da loja",
+  "settings": [
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Título da newsletter",
+      "default": "Receba novidades"
+    }
+  ]
+}
+{% endschema %}
