@@ -1,43 +1,16 @@
 { 
   "sections": {
-    "main-product": {   
-      "type": "main-product",
+    "footer": {
+      "type": "footer",
       "settings": {
-        "title": "Teste produto"
+        "show_phone": true,
+        "show_email": true,
+        "show_address": true,
+        "show_business_information": true
       }
-    },
-    "description": {   
-      "type": "description",
-      "settings": {
-        "title": "Teste description"
-      }
-    },
-    "similar-products": {   
-      "type": "similar-products",
-      "settings": {
-        "title": "Você também pode gostar",
-        "desktop_layout": "carousel"
-      }
-    },
-    "combo-products": {
-      "type": "combo-products",
-      "settings": {}
-    },
-    "product-video": {
-      "type": "product-video",
-      "settings": {}
-    },
-    "product-reviews": {
-      "type": "product-reviews",
-      "settings": {}
     }
   },
   "order": [
-    "main-product",
-    "description",
-    "product-video",
-    "combo-products",
-    "similar-products",
-    "product-reviews"
+    "footer"
   ]
 }

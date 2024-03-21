@@ -50,6 +50,8 @@
     {% endstyle %}
 </head>
 <body class="{{ settings.alias }}">
+  {% assign snippet_name = 'icon-facebook' %}
+  {% render snippet_name | append: "" %}
   {% render 'teste-snippet', title: 'Teste título' %}
   {% render 'teste-snippet', object: featured_categories %}
   {% render 'teste-snippet' with featured_categories as object %}

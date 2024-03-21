@@ -7,7 +7,6 @@
         rel="noreferrer"
       >
       {%- render 'icon-whatsapp' -%}
-      <!-- <span>{{ number | mask('## #########') }}</span> -->
       <span>{{ company.whatsapp.formated_number }}</span>
     </a>
   </span>
@@ -23,7 +22,6 @@
     >
       {%- render 'icon-phone' -%}
       {{ company.phone.formated_number }}
-      <!-- {!! vFilter($merchantData->get('company.phone.number'), "mask('## #########')") !!} -->
     </a>
   </span>
 {%- endif -%}
