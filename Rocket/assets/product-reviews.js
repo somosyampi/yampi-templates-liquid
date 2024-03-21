@@ -52,7 +52,6 @@ class StarRating extends HTMLElement {
     const greyFill = "rgba(153, 153, 153, .3)";
     const star = event.target.closest('.star');
     this.rating = star.dataset.index;
-    console.log(star.dataset.index);
 
     this.stars.forEach((star, index) => {
       if (index + 1 > this.rating) {

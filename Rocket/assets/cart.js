@@ -153,8 +153,6 @@ class MiniCart extends HTMLElement {
     let { products, ...combo } = JSON.parse(localStorage.getItem('comboCartGroup'))[kitId];
     combo.products = comboProducts;
 
-    console.log(combo);
-    
     const originalPrice = combo.products.reduce((total, item) => total + Number(item.price), 0);
 
     const finalPrice = combo.discount_type === 'p'

@@ -28,7 +28,6 @@ class FormNewsletter extends HTMLElement {
         throw new Error(data.message);
       }
 
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -56,15 +55,11 @@ class ExpandableElement extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     // Avoids the first time that the component is rendered, the callback is triggered but with oldValue being null
     if (newValue && oldValue) {
-      console.log('changed');
-      console.log(name, oldValue, newValue);
       this.isExpanded = newValue === 'true';
     }
   }
 
   handleClick() {
-    console.log('click');
-    console.log(this.isExpanded);
     if (this.isExpanded) {
       return this.close();
     }
