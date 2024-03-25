@@ -52,7 +52,6 @@ class StarRating extends HTMLElement {
     const greyFill = "rgba(153, 153, 153, .3)";
     const star = event.target.closest('.star');
     this.rating = star.dataset.index;
-    console.log(star.dataset.index);
 
     this.stars.forEach((star, index) => {
       if (index + 1 > this.rating) {
@@ -98,10 +97,9 @@ class ModalReview extends ModalDialog {
       }
       return response.json();
     }).then(response => {
-      console.log(response);
       button.classList.remove('sending');
     }).catch(error => {
-      console.log(error);
+      console.error(error);
     });
   }
 }
@@ -156,7 +154,6 @@ class ModalQuestion extends ModalDialog {
     }).then(response => {
       return response.json();
     }).then(response => {
-      console.log(response);
       button.classList.remove('sending');
     });
   }

@@ -27,8 +27,6 @@ class FormNewsletter extends HTMLElement {
       if (!response.ok) {
         throw new Error(data.message);
       }
-
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
