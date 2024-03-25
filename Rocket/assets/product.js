@@ -288,12 +288,14 @@ class ProductForm extends HTMLElement {
     event.preventDefault();
 
     if (!this.allVariantsSelected()) {
+      console.log('variants not selected');
       return false;
     }
 
     const productCustomizations = document.querySelector('product-customization');
 
     if (productCustomizations && !productCustomizations.checkValues()) {
+      console.log('customization error');
       return;
     }
 

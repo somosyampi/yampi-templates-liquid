@@ -788,7 +788,7 @@ input + label {
 }
 
 .loader-button.sending {
-	color: transparent;
+	color: transparent !important;
 	position: relative;
 }
 

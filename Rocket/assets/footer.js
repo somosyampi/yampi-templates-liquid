@@ -28,6 +28,7 @@ class FormNewsletter extends HTMLElement {
         throw new Error(data.message);
       }
 
+      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -49,7 +50,9 @@ class ExpandableElement extends HTMLElement {
     const title = this.querySelector('.title');
     this.height = title.scrollHeight;
     this.isExpanded = this.getAttribute('expanded') === 'true';
-    title.addEventListener('click', this.handleClick.bind(this));
+    if (window.innerWidth <= 700) {
+      title.addEventListener('click', this.handleClick.bind(this));
+    }
   }
 
   attributeChangedCallback(name, oldValue, newValue) {

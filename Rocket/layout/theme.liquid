@@ -59,11 +59,21 @@
     
   {% content_for_layout %}
 
+  {% if preview == 'true' %}
+    {% render 'theme-preview' %}
+  {% endif %}
+
   <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'event-bus.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'global.js' | asset_url }}"></script>
-  
+
+  {% javascript %}
+    const urlParams = new URLSearchParams(window.location.search);
+    const isPreview = urlParams.get('preview');
+  {% endjavascript%}
+
+
   <script>
     window.Yampi = {
       cart_token: getCookie('cart_token'),

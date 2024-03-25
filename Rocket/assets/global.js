@@ -148,8 +148,8 @@ customElements.define('stopwatch-timer', StopwatchTimer);
 class ModalDialog extends HTMLElement {
   constructor() {
     super();
-    this.btnClose = this.querySelector('.close-modal');
-    this.btnClose.addEventListener('click', this.closeModal.bind(this));
+    this.btnClose = this.querySelectorAll('.close-modal');
+    this.btnClose.forEach(btn => btn.addEventListener('click', this.closeModal.bind(this)));
     this.addEventListener('keyup', (event) => {
       if (event.code.toUpperCase() === 'ESCAPE') {
          this.closeModal();
