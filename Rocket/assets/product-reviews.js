@@ -154,6 +154,7 @@ class ModalQuestion extends ModalDialog {
     }).then(response => {
       return response.json();
     }).then(response => {
+      console.log(response);
       button.classList.remove('sending');
     });
   }

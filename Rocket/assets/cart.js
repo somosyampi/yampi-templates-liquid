@@ -29,7 +29,6 @@ class MiniCart extends HTMLElement {
     let template = null;
     const cartQtd = document.querySelector('.cart-quantity');
     
-    
     if (!this.cart?.items?.length) {
       template = document.getElementById("empty-cart").innerHTML;
       this.renderEmptyCart();

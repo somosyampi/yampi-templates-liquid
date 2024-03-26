@@ -935,3 +935,9 @@ section:not(.section-header):not(.main-banner):not(.category-content):not(.main-
   font-size: var(--font-14);
   background-color: #ffebef;
 }
+
+@media only screen and (max-width: 1220px) {
+  .container {
+    width: 1000px;
+  }
+}
