@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family={{ settings.fonts_texts_family }}:wght@400;500;700;900&amp;display=swap" rel="stylesheet" media="screen" async="">
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'main-mobile.css' | asset_url | stylesheet_tag }}
-    {{ 'header.css' | asset_url | stylesheet_tag }}
     {{ 'modals.css' | asset_url | stylesheet_tag }}
 
     {% style %}
@@ -73,8 +72,8 @@
       cart_token: getCookie('cart_token'),
       store_token: '{{ merchant.checkout.store_token }}',
       merchant_alias: '{{ merchant.alias }}',
-      api_domain: 'http://api.test/v2/{{ merchant.alias }}',
-      api_domain_public: 'http://api.test/v2/{{ merchant.alias }}/public'
+      api_domain: '{{ merchant.api.search | remove: '/public/search' }}',
+      api_domain_public: '{{ merchant.api.search | remove: '/search' }}'
     }
     
     if (!window.Yampi.cart_token) {

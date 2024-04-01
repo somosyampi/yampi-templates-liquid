@@ -19,122 +19,147 @@
   assign topbar_show_whatsapp = true
 -%}
 
-{{ 'cart.css' | asset_url | stylesheet_tag }}
+{{ 'header.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'header.js' | asset_url }}"></script>
 
 <section class="section-header {{ fixed_header ? '-fixed' : '' }}" id="section-header">
-    <header
-        data-fixed="{{ fixed_header }}"
-        style="--header-font-color: {{ text_color }}; --header-bg-color: {{ background_color }};"
-    >
-        {%- if highlightbar_enabled and highlightbar_text -%}
-          <div class="header-hightlightbar" style="background-color: {{ highlightbar_background }}; color: {{ highlightbar_text_color }}">
-              <div class="container">
-                  {{ highlightbar_text }}
-              </div>
-              {%- if highlightbar_link -%}
-                <a href="{{ highlightbar_link }}" class="full-link">
-                    <span class="-invisible">link</span>
-                </a>
-              {%- endif -%}
-          </div>
-        {%- endif -%}
-      
-        {%- if topbar_enabled and topbar_show_whatsapp or topbar_show_phone or topbar_tracking_url -%}
-        <div class="header-topbar">
-            <div class="container flex -between">
-              {%- if topbar_show_whatsapp or topbar_show_phone -%}
-                <div class="header-topbar_contact flex">
-                    <span>Atendimento:</span>
-                    {%- render 'phones' -%}
-                </div>
-              {%- endif -%}
-
-              {%- if topbar_tracking_url -%}
-                <a href="{{ topbar_tracking_url }}" class="header-topbar_tracking flex -vcenter">
-                  {%- render 'icon-tracker' -%}
-                  Rastreie seu pedido
-                </a>
-              {%- endif -%}
-            </div>
-        </div>
-        {%- endif -%}
-
+  <header data-fixed="{{ fixed_header }}"
+    style="--header-font-color: {{ text_color }}; --header-bg-color: {{ background_color }};">
+    {%- if highlightbar_enabled and highlightbar_text -%}
+      <div class="header-hightlightbar" style="background-color: {{ highlightbar_background }}; color: {{ highlightbar_text_color }}">
         <div class="container">
-            <div class="header-content flex -between {{header_layout !== 'inline' ? '-center' : null }} {{ header_layout === 'left' ? '-drop-menu' : null }}">
-                {%- if show_categories and featured_categories | size -%}
-                <side-bar-trigger class="menu-trigger-holder">
-                    <svg width="20" height="15" fill="{{ text_color }}" viewBox="0 0 15 11" class="mobile -block">
-                        <path d="M1.51 9.927c0 .367-.311.688-.72.688-.408 0-.72-.321-.72-.688 0-.39.312-.688.72-.688.409 0 .72.298.72.688zm11.9-.688H4.185c-.408 0-.72.298-.72.688 0 .367.312.688.72.688h9.225c.408 0 .72-.321.72-.688 0-.39-.312-.688-.72-.688zM.79 4.655c-.408 0-.72.298-.72.688 0 .366.312.687.72.687.409 0 .72-.32.72-.687 0-.39-.311-.688-.72-.688zm12.62 0H4.185c-.408 0-.72.298-.72.688 0 .366.312.687.72.687h9.225c.408 0 .72-.32.72-.687 0-.39-.312-.688-.72-.688zM.79.07C.383.07.07.368.07.758c0 .367.312.688.72.688.409 0 .72-.321.72-.688C1.51.368 1.2.07.79.07zm3.395 1.376h9.225c.408 0 .72-.321.72-.688 0-.39-.312-.688-.72-.688H4.185c-.408 0-.72.298-.72.688 0 .367.312.688.72.688z" />
-                        <path clip-rule="evenodd" d="M0 .758C0 .326.347 0 .79 0c.444 0 .79.326.79.758 0 .407-.344.758-.79.758-.445 0-.79-.35-.79-.758zM.79.141C.418.14.14.41.14.758c0 .326.28.617.65.617.371 0 .65-.29.65-.617C1.44.41 1.163.141.79.141zm2.605.617c0-.432.346-.758.79-.758h9.225c.443 0 .79.326.79.758 0 .407-.345.758-.79.758H4.185c-.445 0-.79-.35-.79-.758zm.79-.617c-.372 0-.65.27-.65.617 0 .326.28.617.65.617h9.225c.37 0 .65-.29.65-.617 0-.348-.278-.617-.65-.617H4.185zM0 5.343c0-.432.347-.758.79-.758.444 0 .79.326.79.758 0 .407-.344.758-.79.758C.345 6.1 0 5.75 0 5.343zm.79-.618c-.372 0-.65.27-.65.618 0 .326.28.617.65.617.371 0 .65-.291.65-.617 0-.348-.277-.618-.65-.618zm2.605.618c0-.432.346-.758.79-.758h9.225c.443 0 .79.326.79.758 0 .407-.345.758-.79.758H4.185c-.445 0-.79-.351-.79-.758zm.79-.618c-.372 0-.65.27-.65.618 0 .326.28.617.65.617h9.225c.37 0 .65-.291.65-.617 0-.348-.278-.618-.65-.618H4.185zM.79 9.31c-.372 0-.65.27-.65.617 0 .327.28.618.65.618.371 0 .65-.291.65-.618 0-.348-.277-.617-.65-.617zM0 9.927c0-.431.347-.758.79-.758.444 0 .79.327.79.758 0 .407-.344.758-.79.758-.445 0-.79-.35-.79-.758zm3.395 0c0-.431.346-.758.79-.758h9.225c.443 0 .79.327.79.758 0 .407-.345.758-.79.758H4.185c-.445 0-.79-.35-.79-.758zm.79-.617c-.372 0-.65.27-.65.617 0 .327.28.618.65.618h9.225c.37 0 .65-.291.65-.618 0-.348-.278-.617-.65-.617H4.185z" />
-                    </svg>
-                  <div class="over-background"></div>
-                </side-bar-trigger>
-                {%- endif -%}
-                
-                <div class="logo {{ $merchantData->get('logo_url') ? null : 'logo--empty' }}">
-                  {%- if merchant.logo_url -%}
-                      <a href="/" class="inline-block">
-                          <img
-                              src="{{ merchant.logo_url }}"
-                              alt="{{ merchant.company.razao_social }}"
-                              width="auto"
-                              height="auto"
-                          />
-                      </a>
-                  {% else %}
-                      <empty-logo 
-                          store-name="{{ merchant.manifest.name }}"
-                      />
-                  {%- endif -%}
-                </div>
-
-                <div class="categories">
-                  {%- if topbar_enabled and topbar_tracking_url-%}
-                    <div class="tracking mobile -block -order-0">
-                        <a href="{{ topbar_tracking_url }}">
-                            {%- render 'icon-tracker' -%}
-                            Rastreie seu pedido
-                        </a>
-                        <hr>
-                    </div>
-                    {%- endif -%}
-
-                    {%- if topbar_show_whatsapp or topbar_show_phone -%}
-                      <div class="phones mobile -block -order-2">
-                          <hr>
-                          {%- render 'phones' -%}
-                      </div>
-                    {%- endif -%}
-
-                    <ul class="inline">
-                        {%- if show_categories -%}
-                          <li class="dropdown-holder category-dropdown-holder">
-                              <span class="padding block">
-                                  <svg width="15" height="11" fill="{{ text_color }}" viewBox="0 0 15 11">
-                                      <path d="M1.51 9.927c0 .367-.311.688-.72.688-.408 0-.72-.321-.72-.688 0-.39.312-.688.72-.688.409 0 .72.298.72.688zm11.9-.688H4.185c-.408 0-.72.298-.72.688 0 .367.312.688.72.688h9.225c.408 0 .72-.321.72-.688 0-.39-.312-.688-.72-.688zM.79 4.655c-.408 0-.72.298-.72.688 0 .366.312.687.72.687.409 0 .72-.32.72-.687 0-.39-.311-.688-.72-.688zm12.62 0H4.185c-.408 0-.72.298-.72.688 0 .366.312.687.72.687h9.225c.408 0 .72-.32.72-.687 0-.39-.312-.688-.72-.688zM.79.07C.383.07.07.368.07.758c0 .367.312.688.72.688.409 0 .72-.321.72-.688C1.51.368 1.2.07.79.07zm3.395 1.376h9.225c.408 0 .72-.321.72-.688 0-.39-.312-.688-.72-.688H4.185c-.408 0-.72.298-.72.688 0 .367.312.688.72.688z" />
-                                      <path clip-rule="evenodd" d="M0 .758C0 .326.347 0 .79 0c.444 0 .79.326.79.758 0 .407-.344.758-.79.758-.445 0-.79-.35-.79-.758zM.79.141C.418.14.14.41.14.758c0 .326.28.617.65.617.371 0 .65-.29.65-.617C1.44.41 1.163.141.79.141zm2.605.617c0-.432.346-.758.79-.758h9.225c.443 0 .79.326.79.758 0 .407-.345.758-.79.758H4.185c-.445 0-.79-.35-.79-.758zm.79-.617c-.372 0-.65.27-.65.617 0 .326.28.617.65.617h9.225c.37 0 .65-.29.65-.617 0-.348-.278-.617-.65-.617H4.185zM0 5.343c0-.432.347-.758.79-.758.444 0 .79.326.79.758 0 .407-.344.758-.79.758C.345 6.1 0 5.75 0 5.343zm.79-.618c-.372 0-.65.27-.65.618 0 .326.28.617.65.617.371 0 .65-.291.65-.617 0-.348-.277-.618-.65-.618zm2.605.618c0-.432.346-.758.79-.758h9.225c.443 0 .79.326.79.758 0 .407-.345.758-.79.758H4.185c-.445 0-.79-.351-.79-.758zm.79-.618c-.372 0-.65.27-.65.618 0 .326.28.617.65.617h9.225c.37 0 .65-.291.65-.617 0-.348-.278-.618-.65-.618H4.185zM.79 9.31c-.372 0-.65.27-.65.617 0 .327.28.618.65.618.371 0 .65-.291.65-.618 0-.348-.277-.617-.65-.617zM0 9.927c0-.431.347-.758.79-.758.444 0 .79.327.79.758 0 .407-.344.758-.79.758-.445 0-.79-.35-.79-.758zm3.395 0c0-.431.346-.758.79-.758h9.225c.443 0 .79.327.79.758 0 .407-.345.758-.79.758H4.185c-.445 0-.79-.35-.79-.758zm.79-.617c-.372 0-.65.27-.65.617 0 .327.28.618.65.618h9.225c.37 0 .65-.291.65-.618 0-.348-.278-.617-.65-.617H4.185z" />
-                                  </svg>
-                                  <span>Categorias</span>
-                              </span>
-  
-                              {%- render 'category-subcategory' -%}
-                          </li>
-                        {%- endif -%}
-
-                        {% for category in featured_categories %}
-                          <li><a href="{{ category.url_path }}">{{ category.name }}</a></li>
-                        {%- endfor -%}
-                    </ul>
-                </div>
-
-                {%- if search_enabled -%}
-                  {%- render 'search' -%}
-                {%- endif -%}
-
-                {% render 'cart' %}
-            </div>
+          {{ highlightbar_text }}
         </div>
-    </header>
+        {%- if highlightbar_link -%}
+          <a href="{{ highlightbar_link }}" class="full-link">
+            <span class="-invisible">link</span>
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if topbar_enabled and topbar_show_whatsapp or topbar_show_phone or topbar_tracking_url -%}
+      <div class="header-topbar">
+        <div class="container flex -between">
+          {%- if topbar_show_whatsapp or topbar_show_phone -%}
+            <div class="header-topbar_contact flex">
+              <span>Atendimento:</span>
+              {%- render 'phones' -%}
+            </div>
+          {%- endif -%}
+
+          {%- if topbar_tracking_url -%}
+            <a href="{{ topbar_tracking_url }}" class="header-topbar_tracking flex -vcenter">
+              {%- render 'icon-tracker' -%}
+              Rastreie seu pedido
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="container">
+      <div class="header-content flex -between {{header_layout !== 'inline' ? '-center' : null }} {{ header_layout === 'left' ? '-drop-menu' : null }}">
+        {%- if show_categories and featured_categories | size -%}
+          <side-bar-trigger class="menu-trigger-holder">
+            <svg width="20" height="15" fill="{{ text_color }}" viewBox="0 0 15 11" class="mobile -block">
+              <path
+                d="M1.51 9.927c0 .367-.311.688-.72.688-.408 0-.72-.321-.72-.688 0-.39.312-.688.72-.688.409 0 .72.298.72.688zm11.9-.688H4.185c-.408 0-.72.298-.72.688 0 .367.312.688.72.688h9.225c.408 0 .72-.321.72-.688 0-.39-.312-.688-.72-.688zM.79 4.655c-.408 0-.72.298-.72.688 0 .366.312.687.72.687.409 0 .72-.32.72-.687 0-.39-.311-.688-.72-.688zm12.62 0H4.185c-.408 0-.72.298-.72.688 0 .366.312.687.72.687h9.225c.408 0 .72-.32.72-.687 0-.39-.312-.688-.72-.688zM.79.07C.383.07.07.368.07.758c0 .367.312.688.72.688.409 0 .72-.321.72-.688C1.51.368 1.2.07.79.07zm3.395 1.376h9.225c.408 0 .72-.321.72-.688 0-.39-.312-.688-.72-.688H4.185c-.408 0-.72.298-.72.688 0 .367.312.688.72.688z" />
+              <path clip-rule="evenodd"
+                d="M0 .758C0 .326.347 0 .79 0c.444 0 .79.326.79.758 0 .407-.344.758-.79.758-.445 0-.79-.35-.79-.758zM.79.141C.418.14.14.41.14.758c0 .326.28.617.65.617.371 0 .65-.29.65-.617C1.44.41 1.163.141.79.141zm2.605.617c0-.432.346-.758.79-.758h9.225c.443 0 .79.326.79.758 0 .407-.345.758-.79.758H4.185c-.445 0-.79-.35-.79-.758zm.79-.617c-.372 0-.65.27-.65.617 0 .326.28.617.65.617h9.225c.37 0 .65-.29.65-.617 0-.348-.278-.617-.65-.617H4.185zM0 5.343c0-.432.347-.758.79-.758.444 0 .79.326.79.758 0 .407-.344.758-.79.758C.345 6.1 0 5.75 0 5.343zm.79-.618c-.372 0-.65.27-.65.618 0 .326.28.617.65.617.371 0 .65-.291.65-.617 0-.348-.277-.618-.65-.618zm2.605.618c0-.432.346-.758.79-.758h9.225c.443 0 .79.326.79.758 0 .407-.345.758-.79.758H4.185c-.445 0-.79-.351-.79-.758zm.79-.618c-.372 0-.65.27-.65.618 0 .326.28.617.65.617h9.225c.37 0 .65-.291.65-.617 0-.348-.278-.618-.65-.618H4.185zM.79 9.31c-.372 0-.65.27-.65.617 0 .327.28.618.65.618.371 0 .65-.291.65-.618 0-.348-.277-.617-.65-.617zM0 9.927c0-.431.347-.758.79-.758.444 0 .79.327.79.758 0 .407-.344.758-.79.758-.445 0-.79-.35-.79-.758zm3.395 0c0-.431.346-.758.79-.758h9.225c.443 0 .79.327.79.758 0 .407-.345.758-.79.758H4.185c-.445 0-.79-.35-.79-.758zm.79-.617c-.372 0-.65.27-.65.617 0 .327.28.618.65.618h9.225c.37 0 .65-.291.65-.618 0-.348-.278-.617-.65-.617H4.185z" />
+            </svg>
+            <div class="over-background"></div>
+          </side-bar-trigger>
+        {%- endif -%}
+
+        <div class="logo {{ $merchantData->get('logo_url') ? null : 'logo--empty' }}">
+          {%- if merchant.logo_url -%}
+            <a href="/" class="inline-block">
+              <img src="{{ merchant.logo_url }}" alt="{{ merchant.company.razao_social }}" width="auto" height="auto" />
+            </a>
+          {% else %}
+            <empty-logo store-name="{{ merchant.manifest.name }}" />
+          {%- endif -%}
+        </div>
+
+        <div class="categories">
+          {%- if topbar_enabled and topbar_tracking_url-%}
+            <div class="tracking mobile -block -order-0">
+              <a href="{{ topbar_tracking_url }}">
+                {%- render 'icon-tracker' -%}
+                Rastreie seu pedido
+              </a>
+              <hr>
+            </div>
+          {%- endif -%}
+
+          {%- if topbar_show_whatsapp or topbar_show_phone -%}
+            <div class="phones mobile -block -order-2">
+              <hr>
+              {%- render 'phones' -%}
+            </div>
+          {%- endif -%}
+
+          <ul class="inline">
+            {%- if show_categories -%}
+              <li is="category-dropdown" class="dropdown-holder category-dropdown-holder">
+                <span class="padding block">
+                  <svg width="15" height="11" fill="{{ text_color }}" viewBox="0 0 15 11">
+                    <path
+                      d="M1.51 9.927c0 .367-.311.688-.72.688-.408 0-.72-.321-.72-.688 0-.39.312-.688.72-.688.409 0 .72.298.72.688zm11.9-.688H4.185c-.408 0-.72.298-.72.688 0 .367.312.688.72.688h9.225c.408 0 .72-.321.72-.688 0-.39-.312-.688-.72-.688zM.79 4.655c-.408 0-.72.298-.72.688 0 .366.312.687.72.687.409 0 .72-.32.72-.687 0-.39-.311-.688-.72-.688zm12.62 0H4.185c-.408 0-.72.298-.72.688 0 .366.312.687.72.687h9.225c.408 0 .72-.32.72-.687 0-.39-.312-.688-.72-.688zM.79.07C.383.07.07.368.07.758c0 .367.312.688.72.688.409 0 .72-.321.72-.688C1.51.368 1.2.07.79.07zm3.395 1.376h9.225c.408 0 .72-.321.72-.688 0-.39-.312-.688-.72-.688H4.185c-.408 0-.72.298-.72.688 0 .367.312.688.72.688z" />
+                    <path clip-rule="evenodd"
+                      d="M0 .758C0 .326.347 0 .79 0c.444 0 .79.326.79.758 0 .407-.344.758-.79.758-.445 0-.79-.35-.79-.758zM.79.141C.418.14.14.41.14.758c0 .326.28.617.65.617.371 0 .65-.29.65-.617C1.44.41 1.163.141.79.141zm2.605.617c0-.432.346-.758.79-.758h9.225c.443 0 .79.326.79.758 0 .407-.345.758-.79.758H4.185c-.445 0-.79-.35-.79-.758zm.79-.617c-.372 0-.65.27-.65.617 0 .326.28.617.65.617h9.225c.37 0 .65-.29.65-.617 0-.348-.278-.617-.65-.617H4.185zM0 5.343c0-.432.347-.758.79-.758.444 0 .79.326.79.758 0 .407-.344.758-.79.758C.345 6.1 0 5.75 0 5.343zm.79-.618c-.372 0-.65.27-.65.618 0 .326.28.617.65.617.371 0 .65-.291.65-.617 0-.348-.277-.618-.65-.618zm2.605.618c0-.432.346-.758.79-.758h9.225c.443 0 .79.326.79.758 0 .407-.345.758-.79.758H4.185c-.445 0-.79-.351-.79-.758zm.79-.618c-.372 0-.65.27-.65.618 0 .326.28.617.65.617h9.225c.37 0 .65-.291.65-.617 0-.348-.278-.618-.65-.618H4.185zM.79 9.31c-.372 0-.65.27-.65.617 0 .327.28.618.65.618.371 0 .65-.291.65-.618 0-.348-.277-.617-.65-.617zM0 9.927c0-.431.347-.758.79-.758.444 0 .79.327.79.758 0 .407-.344.758-.79.758-.445 0-.79-.35-.79-.758zm3.395 0c0-.431.346-.758.79-.758h9.225c.443 0 .79.327.79.758 0 .407-.345.758-.79.758H4.185c-.445 0-.79-.35-.79-.758zm.79-.617c-.372 0-.65.27-.65.617 0 .327.28.618.65.618h9.225c.37 0 .65-.291.65-.618 0-.348-.278-.617-.65-.617H4.185z" />
+                  </svg>
+                  <span>Categorias</span>
+                </span>
+
+                {%- render 'category-subcategory' -%}
+              </li>
+            {%- endif -%}
+
+            {% for category in featured_categories %} 
+              <li is="category-dropdown" class="dropdown-holder category-dropdown-holder {% if category.children.size > 0 %}has-subcategory{% endif %}">
+                <a href="{{ category.url_path }}">
+                  {{ category.name }}
+                  {% if category.children.size > 0 %}
+                    {% render 'icon-arrow' %}
+                  {% endif %}
+                </a>
+                {% if category.children.size > 0 %}
+                  <div class="dropdown category-subcategory-menu">
+                    <div class="holder-categories">
+                      <div class="mobile">
+                        <div class="close-dropdown inline-block">
+                          {% render 'icon-arrow' %}
+                          Voltar
+                        </div>
+                        <div class="category-title">
+                          {{ category.name }}
+                        </div>
+                      </div>
+                      <ul>
+                        {% for subcategory in category.children %}
+                          <li class="item-category">
+                            <a href="{{ subcategory.url_path }}">{{ subcategory.name }}</a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                {% endif %}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+
+        {%- if search_enabled -%}
+          {%- render 'search' -%}
+        {%- endif -%}
+
+        {% render 'cart' %}
+      </div>
+    </div>
+  </header>
 </section>
 
 {% schema %}
@@ -142,10 +167,10 @@
   "name": "Teste",
   "settings": [
     {
-      "type": "inline_richtext",
-      "id": "title",
-      "label": "Foo",
-      "default": "header"
+    "type": "inline_richtext",
+    "id": "title",
+    "label": "Foo",
+    "default": "header"
     }
   ]
 }

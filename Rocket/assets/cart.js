@@ -39,6 +39,7 @@ class MiniCart extends HTMLElement {
       template = this.getCartTemplate(this.cart);
       this.cartElement.innerHTML = template;
 
+      this.combos = groupBy(this.cart.items.filter(item => item.kit_id), 'kit_id');
       if (Object.keys(this.combos).length) {
         for (const kit_id in this.combos) {
           this.getCombo(kit_id, this.combos[kit_id]);
@@ -65,7 +66,6 @@ class MiniCart extends HTMLElement {
     })
     .then(data => {
       this.cart = data.cart;
-      this.combos = groupBy(this.cart.items.filter(item => item.kit_id), 'kit_id');
       
       this.renderCart();
     });
