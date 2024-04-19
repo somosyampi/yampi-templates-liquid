@@ -1,5 +1,4 @@
 {%- liquid
-  assign promotions_text_color = "#FF0000"
   assign header_layout = "left"
   assign background_color = "#FFFFFF"
   assign text_color = "#0E0124"
@@ -18,12 +17,11 @@
   assign fixed_header = true
   assign topbar_show_whatsapp = true
 -%}
-
-{{ 'header.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'header.css' | asset_url }}">
 <script src="{{ 'header.js' | asset_url }}"></script>
 
-<section class="section-header {{ fixed_header ? '-fixed' : '' }}" id="section-header">
-  <header data-fixed="{{ fixed_header }}"
+<section class="section-header" id="section-header">
+  <header
     style="--header-font-color: {{ text_color }}; --header-bg-color: {{ background_color }};">
     {%- if highlightbar_enabled and highlightbar_text -%}
       <div class="header-hightlightbar" style="background-color: {{ highlightbar_background }}; color: {{ highlightbar_text_color }}">
@@ -60,7 +58,7 @@
 
     <div class="container">
       <div class="header-content flex -between {{header_layout !== 'inline' ? '-center' : null }} {{ header_layout === 'left' ? '-drop-menu' : null }}">
-        {%- if show_categories and featured_categories | size -%}
+        {%- if show_categories and featured_categories.size > 0 -%}
           <side-bar-trigger class="menu-trigger-holder">
             <svg width="20" height="15" fill="{{ text_color }}" viewBox="0 0 15 11" class="mobile -block">
               <path
@@ -128,7 +126,7 @@
                 {% if category.children.size > 0 %}
                   <div class="dropdown category-subcategory-menu">
                     <div class="holder-categories">
-                      <div class="mobile">
+                      <div class="mobile -block">
                         <div class="close-dropdown inline-block">
                           {% render 'icon-arrow' %}
                           Voltar
@@ -164,13 +162,102 @@
 
 {% schema %}
 {
-  "name": "Teste",
+  "name": "Seção do cabeçalho da loja",
   "settings": [
     {
-    "type": "inline_richtext",
-    "id": "title",
-    "label": "Foo",
-    "default": "header"
+      "id": "header_layout",
+      "label": "Layout do header",
+      "type": "select",
+      "options": [
+        { "value": "left", "label": "Logotipo à esquerda e menu abaixo" },
+        { "value": "inline", "label": "Logotipo à esquerda e menu ao lado" },
+        { "value": "center", "label": "Logotipo centralizado e menu abaixo" }
+      ],
+      "default": "inline"
+    },
+    {
+      "id": "background_color",
+      "type": "color",
+      "label": "Cor do cabeçalho",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Cor do texto",
+      "default": "#222222"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_categories",
+      "label": "Mostrar menu  ≡ Categorias",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "search_enabled",
+      "label": "Mostrar busca",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "topbar_enabled",
+      "label": "Mostrar barra superior",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "topbar_show_whatsapp",
+      "label": "Mostrar WhatsApp",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "topbar_show_phone",
+      "label": "Mostrar telefone/celular",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "topbar_tracking_url",
+      "label": "Link para rastreio de pedidos",
+      "default": ""
+    },
+    {
+      "type": "text",
+      "id": "highlightbar_enabled",
+      "label": "Exibir barra de anúncio",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "highlightbar_only_home",
+      "label": "Barra de anúncio apenas na página inicial",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "highlightbar_text",
+      "label": "Texto da barra de anúncio",
+      "default": ""
+    },
+    {
+      "type": "text",
+      "id": "highlightbar_link",
+      "label": "Link da barra de anúncio",
+      "default": ""
+    },
+    {
+      "type": "color",
+      "id": "highlightbar_background",
+      "label": "Cor da barra",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "highlightbar_text_color",
+      "label": "Cor do texto",
+      "default": "#FFFFFF"
     }
   ]
 }

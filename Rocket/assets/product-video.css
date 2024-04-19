@@ -47,4 +47,8 @@
   .video .yt-video {
     margin-top: 20px;
   }
+
+  .video .container.-remove-overflow {
+    overflow-x: visible;
+  }
 }

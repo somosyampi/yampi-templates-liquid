@@ -12,21 +12,30 @@ class FormNewsletter extends HTMLElement {
     event.preventDefault();
 
     const formData = new FormData(this.form);
-
-    const url = `${window.Yampi.api_domain}/leads`;
+  
+    const body = {
+      lead: {
+        email: formData.get('email'),
+        merchant_alias: window.Yampi.merchant_alias
+      }
+    }
+    
+    const url = '/api/v1/leads';
 
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: formData
+        body: JSON.stringify(body)
       });
-
-      const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.message);
       }
+
+      const data = await response.json();
+
+      console.log(data);
     } catch (error) {
       console.error(error);
     }

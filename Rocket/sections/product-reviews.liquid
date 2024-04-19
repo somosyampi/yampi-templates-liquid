@@ -1,4 +1,4 @@
-{{ "product-reviews.css" | asset_url | stylesheet_tag }}
+<link href="{{ "product-reviews.css" | asset_url }}" rel="stylesheet">
 <script src="{{ 'product-reviews.js' | asset_url }}" defer="defer"></script>
 
 <section class="product-reviews container">
@@ -16,7 +16,7 @@
     </div>
     <div class="tab-content active">
       <div class="holder-reviews">
-        <modal-opener data-modal="#modal-review">
+        <modal-opener class="block" data-modal="#modal-review">
           <div class="btn btn-secundary">Avaliar produto</div>  
         </modal-opener>
         {% if product.reviews.size > 0 %}
@@ -58,7 +58,7 @@
     </div>
     <div class="tab-content" show-average-reviews="true">
       <div class="holder-questions">
-        <modal-opener data-modal="modal-question">
+        <modal-opener class="block" data-modal="modal-question">
           <div class="btn btn-secundary">Perguntar</div>
         </modal-opener>
         {% if product.comments.size > 0 %}
@@ -185,7 +185,7 @@
           <input id="question-email" type="email" name="email" placeholder="Ex.: adriana@gmail.com">
         
           <label for="question-message">DÚVIDA</label>
-          <textarea id="question-message" name="question" placeholder="Escreva sua dúvida..." rows="4"></textarea>
+          <textarea id="question-message" name="message" placeholder="Escreva sua dúvida..." rows="4"></textarea>
         
           <button type="submit" class="loader-button btn -block btn-secundary">
             Enviar dúvida

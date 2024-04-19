@@ -1,11 +1,38 @@
-<shipping-form class="main-product-shipping">
+<shipping-form data-option-id="{{ product.sku_id }}" data-product-price="{{ product.prices.data.price }}" class="main-product-shipping">
   <label for="zipcode">SIMULAR FRETE</label>
 
   <form id="form-zipcode">
     <div class="-holder relative">
-      <input type="tel" placeholder="Ex.: 00000-000">
+      <input type="tel" placeholder="Ex.: 00000-000" name="zipcode" id="zipcode">
 
       <button class="btn btn-secundary -small">OK</button>
     </div>
   </form>
 </shipping-form>
+
+<modal-dialog id="modal-shipping" class="modal" tabindex="-1">
+  <div class="modal-body">
+    <div class="flex -between">
+      <div class="modal-header">
+        <div class="theme-title">
+          Simular frete
+        </div>
+        <div class="subtitle">
+          Para o cep
+          <span class="selected-zipcode"></span>
+          <span class="-divisor"> | </span>
+          <span class="selected-city"></span>
+        </div>
+      </div>
+      <div class="close-modal">
+        {% render 'icon-close' %}
+      </div>
+    </div>
+    <div class="modal-content">
+      <table class="table"></table>
+      <div class="disclaimer">
+        Prazo de entrega a partir da aprovação de pagamento <span class="display-hibrid">e envio ao operador logístico.</span>
+      </div>
+    </div>
+  </div>
+</modal-dialog>

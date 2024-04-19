@@ -1,10 +1,10 @@
-{% style %}
-.box-product-wrapper {
-  margin-left: 16px;
-  margin-right: 16px;
-  flex: 1 0 215px;
-}
-{% endstyle %}
+<style>
+  .box-product-wrapper {
+    margin-left: 16px;
+    margin-right: 16px;
+    flex: 1 0 215px;
+  }
+</style>
 
 <section class="collection collection-2 completed">
   <div class="container holder-collection">
@@ -54,46 +54,3 @@
     </div>
   </div>
 </section>
-
-{% javascript %}
-
-const buyButton = document.querySelectorAll('.buy-button');
-
-const addToCart = (itemId) => {
-  const url = `${window.routes.cart_base_url}/items?store_token=${window.Yampi.store_token}&cart_token=${window.Yampi.cart_token}`;
-
-  const cart = document.querySelector('side-cart') || document.querySelector('dropdown-cart');
-
-  const body = {
-    cart_token: window.Yampi.cart_token,
-    customization: {
-      [itemId]: {}
-    },
-    has_recomm: false,
-    item_metadata: [],
-    metadata: {
-      source_platform: "open_store"
-    },
-    product_option_id: [parseInt(itemId)],
-    quantity: 1,
-    skipShipment: true,
-    store_token: window.Yampi.store_token
-  }
-
-  fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  }).then(response => {
-    return response.json();
-  }).then(response => {
-    cart.cart = response.cart;
-    cart.renderCart();
-  });
-}
-
-buyButton.forEach((button) => {
-    button.addEventListener('click', (event) => addToCart(button.dataset.optionId));
-})
-
-{% endjavascript %}

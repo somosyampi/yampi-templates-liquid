@@ -158,7 +158,7 @@
   background-color: var(--color-general-primary);
 }
 
-.carousel-track {
+carousel-component .carousel-track {
   display: flex;
   margin: 0 !important;
   width: max-content;
@@ -184,8 +184,9 @@ carousel-component {
   margin: 0 !important;
 }
 
-.carousel-track .box-product-wrapper {
-  margin-left: 0 !important;
+carousel-component .carousel-track .box-product-wrapper {
+  margin-left: 0;
+  flex: unset;
 }
 
 carousel-component .carousel-controls {

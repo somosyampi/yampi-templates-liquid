@@ -186,7 +186,7 @@ body:not(.home) .header {
 	padding-right: var(--category-spacing);
 }
 
-.header-content .categories ul li a:not(.block), .header-content .categories ul li .padding:not(.block) {
+.header-content .categories ul li a:not(.block) {
 	display: inline-block;
 }
 
@@ -236,15 +236,12 @@ body:not(.home) .header {
 
 
 /* Subcategory dropdown */
-.header-content .dropdown.category-subcategory-menu {
-	width: 218px;
+.header-content .category-subcategory-menu {
+  width: 218px;
 	padding: 28px 0 32px;
 	background-color: var(--default-background-color);
-}
-
-.header-content .dropdown.category-subcategory-menu.dropdown {
+  margin-top: 0;
 	border: 0;
-	margin-top: 8px;
 	z-index: 3;
 }
 
@@ -322,7 +319,7 @@ body:not(.home) .header {
 
 .header-content .dropdown.category-subcategory-menu .close-dropdown {
 	margin-bottom: 30px;
-	padding: 11px 15px 11px 29px;
+	padding: 11px 15px 11px 16px;
 	font-size: var(--font-13);
 	color: var(--black-medium);
 	border-radius: var(--theme-border-radius);
@@ -331,8 +328,12 @@ body:not(.home) .header {
 	background-position: 16px center;
 }
 
-.header-content .dropdown.category-subcategory-menu .close-dropdown.-ml {
-	margin-left: 24px;
+.header-content .dropdown.category-subcategory-menu .close-dropdown svg {
+  transform: rotate(90deg);
+  margin-bottom: 1px;
+  fill: var(--black-medium);
+  width: 9px;
+  height: 5px;
 }
 
 @media only screen and (max-width: 700px) {
@@ -351,29 +352,13 @@ body:not(.home) .header {
 		background-position: 100% center;
 	}
 	
-	.category-dropdown-holder > span > svg {
-		display: none;
-	}
-	
-	.category-dropdown-holder.active-dropdown ~ li {
-		display: none !important;
-	}
-	
-	.category-dropdown-holder.active-subdropdown .item-category:not(.active-dropdown) {
-		display: none;
-	}
-	
-	.header-content .dropdown.category-subcategory-menu.dropdown {
-		padding: 32px;
-		margin-top: 0;
-	}
-	
-	.header-content .dropdown.category-subcategory-menu.dropdown, .header-content .dropdown.category-subcategory-menu .holder-sub-categories.dropdown {
+	.header-content .dropdown.category-subcategory-menu, .header-content .holder-sub-categories.dropdown {
 		top: 0;
 		left: 0;
 		width: 100%;
 		border-radius: 0;
 		background-color: white;
+    padding: 32px 24px;
 		border: 0;
 		display: block;
 		opacity: 1;
@@ -381,10 +366,19 @@ body:not(.home) .header {
 		transform: translate3d(-100%, 0, 0);
 		transition: transform 0.3s !important;
 	}
-	
-	.header-content .dropdown.category-subcategory-menu.dropdown:not(.-simple):after, .header-content .dropdown.category-subcategory-menu .holder-sub-categories.dropdown:not(.-simple):after, .header-content .dropdown.category-subcategory-menu.dropdown:not(.-simple):before, .header-content .dropdown.category-subcategory-menu .holder-sub-categories.dropdown:not(.-simple):before {
-		display: none;
-	}
+
+  .header-content .categories ul li a:not(.block) {
+  	display: flex;
+    justify-content: space-between;
+  }
+
+  .category-dropdown-holder > span > svg {
+    display: none;
+  }
+
+  .category-dropdown-holder svg {
+    transform: rotate(-90deg);
+  }
 	
 	.header-content .dropdown.category-subcategory-menu .holder-sub-categories {
 		padding: 32px 24px;
@@ -392,14 +386,6 @@ body:not(.home) .header {
 	
 	.header-content .dropdown.category-subcategory-menu .holder-sub-categories li {
 		color: var(--black-dark);
-	}
-	
-	.header-content .dropdown.category-subcategory-menu .holder-categories > .mobile {
-		padding: 0 24px;
-	}
-	
-	.header-content .dropdown.category-subcategory-menu .holder-categories > .mobile .close-dropdown {
-		margin-left: 0;
 	}
 	
 	.header-content .dropdown.category-subcategory-menu .holder-categories > ul li.item-category {
@@ -415,8 +401,8 @@ body:not(.home) .header {
 	}
 	
 	.header-content .dropdown.category-subcategory-menu .holder-categories > ul li.item-category > a {
-		padding-left: 24px !important;
-		padding-right: 42px !important;
+		padding-left: 0 !important;
+		padding-right: 0 !important;
 	}
 	
 	.category-title, .parent-category-name {
@@ -515,7 +501,7 @@ body:not(.home) .header {
   
   .categories ul li {
   	display: block;
-    padding: 9px 0;
+    padding: 11px 0;
   }
   
   .categories ul li a, .categories ul li .padding {
@@ -536,6 +522,10 @@ body:not(.home) .header {
   .categories ul svg {
   	fill: var(--black-dark);
   }
+
+  .header-content hr {
+    margin: 20px 0;
+  }
   
   .categories .phone-link, .categories .phone-link_whatsapp {
   	padding: 12px 0;
@@ -543,7 +533,7 @@ body:not(.home) .header {
   	line-height: 18px;
   }
   
-  .categories svg.-whatsapp {
+  .categories .icon-whatsapp {
   	margin-right: 10px;
   	width: 14px;
   	height: 14px;
@@ -557,5 +547,10 @@ body:not(.home) .header {
 
   .categories .-order-2 {
     order: 1;
+  }
+
+  .header-content .category-subcategory-menu.dropdown.is-active {
+    transform: translate3d(0, 0, 0);
+    overflow: scroll;
   }
 }

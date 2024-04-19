@@ -84,12 +84,12 @@ class ModalReview extends ModalDialog {
     const formData = new FormData(this.form);
     formData.append('rating', rating);
     formData.append('product_id', productId);
+    formData.append('merchant_alias', window.Yampi.merchant_alias);
 
-    const url = `${window.Yampi.api_domain}/catalog/reviews`;
+    const url = '/api/v1/form/review';
 
     fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: formData
     }).then(response => {
       if (!response.ok) {
@@ -144,12 +144,13 @@ class ModalQuestion extends ModalDialog {
     const productId = this.dataset.productId;
 
     const formData = new FormData(this.form);
+    formData.append('merchant_alias', window.Yampi.merchant_alias);
+    formData.append('product_id', productId);
 
-    const url = `${window.Yampi.api_domain}/catalog/comments`;
+    const url = '/api/v1/form/comments';
 
     fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: formData
     }).then(response => {
       return response.json();

@@ -1,9 +1,15 @@
 { 
   "sections": {
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
     "main-product": {   
       "type": "main-product",
       "settings": {
-        "title": "Teste produto"
+        "show_sku": false,
+        "show_warranty": true,
+        "show_availability": true
       }
     },
     "description": {   
@@ -12,10 +18,17 @@
         "title": "Teste description"
       }
     },
-    "similar-products": {   
+    "similar-products-1": {   
       "type": "similar-products",
       "settings": {
-        "title": "Você também pode gostar",
+        "title": "Sem carrossel",
+        "desktop_layout": "grid"
+      }
+    },
+    "similar-products-2": {   
+      "type": "similar-products",
+      "settings": {
+        "title": "Com carrossel",
         "desktop_layout": "carousel"
       }
     },
@@ -42,11 +55,13 @@
     }
   },
   "order": [
+    "header",
     "main-product",
     "description",
     "product-video",
     "combo-products",
-    "similar-products",
+    "similar-products-1",
+    "similar-products-2",
     "product-reviews",
     "footer"
   ]

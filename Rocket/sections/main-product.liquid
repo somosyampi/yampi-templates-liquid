@@ -1,9 +1,13 @@
-{{ 'main-product.css' | asset_url | stylesheet_tag }}
-{{ 'carousel.css' | asset_url | stylesheet_tag }}
+<link href="{{ 'main-product.css' | asset_url }}" rel="stylesheet">
+<link href="{{ 'carousel.css' | asset_url }}" rel="stylesheet">
 <script src="{{ 'carousel.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'product.js' | asset_url }}" defer="defer"></script>
+ 
+{% assign thumbor_url = 'https://images.yampi.io/unsafe/fit-in/75x75/filters:background_color(white):upscale()' %}
 
-{% assign thumbor_url = 'https://images.yampi.io/unsafe/fit-in/75x75/filters:background_color(white):upscale()/' %}
+<script>
+  window.selectedSku = {{ product.skus.data[0] | json }}
+</script>
 
 <section class="main-product-holder container">
   <div class="main-product-images">
@@ -11,7 +15,7 @@
       <ul>
         {% for image in product.images.data %}
           <li class="thumb-item" data-index="{{ forloop.index0 }}">
-            <img src="{{ image.url | prepend: thumbor_url }}" class="thumb-image" />
+            <img src="{{ thumbor_url }}/{{ image.url }}" class="thumb-image" />
           </li>
         {% endfor %}
         <smooth-scroller class="smooth-element" data-target="#holder-main-product-video">
@@ -62,20 +66,19 @@
       <div class="reference-availability">
         {% if section.settings.show_sku %}
           <span class="main-product-reference">
-            Ref.:
             <span>
-              {{ product.skus.data.0.sku }}
+              Ref.: {{ product.sku }}
             </span>
           </span>
         {% endif %}
 
-        <span> | </span>
+        <span class="divisor"> | </span>
 
         {% if section.settings.show_availability %}
           <span class="main-product-availability">
             Disponibilidade:
             <span>
-              {{ product.skus.data.0.days_availability_formated }}
+              {{ product.skus.data[0].days_availability_formated }}
             </span>
           </span>
         {% endif %}
@@ -87,7 +90,11 @@
         <span>
           {{ product.warranty }}
         </span>
-        {{ product.warranty > 1 ? 'meses' : 'mês' }}
+        {% if product.warranty > 1 %}
+          meses
+        {% else %}
+          mês
+        {% endif%}
       </div>
     {% endif %}
 
@@ -149,6 +156,7 @@
                     <select
                       id="{{ variation.id }}-{{ variation.name }}"
                       name="{{ variation.id }}-{{ variation.name }}"
+                      data-index="{{ forloop.index0 }}"
                     >
                       <option value="0" selected>Selecionar...</option>
                       {% for option in variation.values.data %}
@@ -161,10 +169,9 @@
               {% endfor %}
             </div>
           </select-sku>
-  
-          {% javascript %}
+          <script>
             document.querySelector('.main-product-info select-sku').skus = {{ product.skus.data | json }}
-          {% endjavascript %}
+          </script>
         {% endif %}
         <form>
           <div class="main-product-buy-button-holder flex">
@@ -265,7 +272,9 @@
           </div>
         </div>
         <div class="modal-content">
-          <img src="" />
+          <pinch-zoom>
+            <img src="" />
+          </pinch-zoom>
         </div>
       </div>
     </zoom-modal>

@@ -48,6 +48,16 @@ const compareNumber = (a, b) => a - b;
 
 const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
 
+const maskCep = (cep) => {
+  cep = cep.replace(/\D/g, '');
+
+  if (cep.length > 5) {
+    cep = cep.substring(0, 5) + '-' + cep.substring(5, 8);
+  }
+
+  return cep;
+}
+
 class BaseInstallments extends HTMLElement {
   constructor() {
     super();
@@ -220,29 +230,67 @@ class ShippingForm extends HTMLElement {
 
   connectedCallback() {
     this.form = this.querySelector('form');
+    this.querySelector('input').addEventListener('input', this.handleInputChange.bind(this));
 
     this.form.addEventListener('submit', this.onFormSubmit.bind(this));
   }
 
   onFormSubmit(event) {
     event.preventDefault();
-    const optionId = '15443857';
+    const optionId = this.dataset.optionId;
     const quantity = 1;
-    const zipcode = '14945196';
-    const total = 35;
-    const route = `https://logistics.yampi.io/api/v1/shipping/calculate?product_option_id[]=${optionId}=&quantity[]=${quantity}&zipcode=${zipcode}&total=${total}`;
+    const zipcode = this.querySelector('input#zipcode').value;
+    const total = this.dataset.productPrice;
+    const route = `${window.Yampi.bart_url}/api/v1/shipping/calculate?product_option_id[]=${optionId}&quantity[]=${quantity}&zipcode=${zipcode}&total=${total}`;
     
     fetch(route)
-      .then((response) => response.json())
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Erro na solicitação: ${response.status}`);
         }
-        
-        const data = response;
+
+        return response.json();
+      }).then(response => {
+        this.renderResponse(response);
       }).catch((error) => {
         console.error(error);
       })
+  }
+
+  renderResponse(data) {
+    this.quotes = Object.values(data);
+    const firstQuote = this.quotes[0];
+    
+    const modalBody = document.getElementById('modal-shipping');
+
+    modalBody.querySelector('.selected-zipcode').textContent = firstQuote.zipcode;
+    modalBody.querySelector('.selected-city').textContent = `${firstQuote.city} - ${firstQuote.uf}`;
+
+    const template = `
+      <tr>
+          <th>Tipo</th>
+          <th>Prazo</th>
+          <th>Valor</th>
+      </tr>
+
+      <tr>
+        ${this.quotes.map(quote => {
+          return `
+            <td>${ quote.service_display_name }</td>
+            <td>${ quote.formated_delivery_time }</td>
+            <td class="price">${ quote.formated_price }</td>
+          `
+        }).join('')}
+      </tr>
+    `;
+
+    modalBody.querySelector('.modal-content table').innerHTML = template.trim();
+    
+    modalBody.openModal();
+  }
+
+  handleInputChange(event) {
+    event.target.value = maskCep(event.target.value);
   }
 }
 
@@ -284,7 +332,7 @@ class ProductForm extends HTMLElement {
     return values;
   }
 
-  onFormSubmit(event) {
+  async onFormSubmit(event) {
     event.preventDefault();
 
     if (!this.allVariantsSelected()) {
@@ -322,16 +370,30 @@ class ProductForm extends HTMLElement {
       store_token: window.Yampi.store_token
     }
 
-    fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    }).then(response => {
-      return response.json();
-    }).then(response => {
-      publish(EVENTS.cartUpdate, { source: 'product-form', productOptionId: itemId, cartData: response });
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      console.log(response);
+
+      const cartData = await response.json();
+
+      console.log(cartData);
+
+      console.log(cartData.message[0].message);
+
+      if (!response.ok) {
+        throw new Error(cartData.message[0].message);
+      }
+
+      publish(EVENTS.cartUpdate, { source: 'product-form', productOptionId: itemId, cartData });
       event.submitter.classList.remove('sending');
-    });
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 
@@ -370,13 +432,14 @@ class SelectSku extends HTMLElement {
   }
 
   checkIfIsValidSku(sku) {
-    if (!sku || sku.blocked_sale) {
-      return false;
-    }
-
     window.selectedSku = sku;
     const optionToCart = document.getElementById('option-to-cart');
     optionToCart.value = sku.id;
+    
+    if (!sku || sku.blocked_sale) {
+      console.log('!sku || sku.blocked_sale');
+      return false;
+    }
 
     const previousCustomization = document.querySelector('product-customization');
 
@@ -578,3 +641,44 @@ class ProductCustomization extends HTMLElement {
 }
 
 customElements.define('product-customization', ProductCustomization);
+
+class PinchZoom extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    let initialDistance = 0;
+    let initialWidth = 0;
+
+    const img = this.querySelector('#modal-product-zoom img');
+
+    img.addEventListener('touchstart', (event) => {
+        if (event.touches.length === 2) {
+            initialDistance = this.calculateDistance(event.touches);
+            initialWidth = parseInt(window.getComputedStyle(img).getPropertyValue('width'));
+        }
+    });
+    
+    img.addEventListener('touchmove', (event) => {
+        if (event.touches.length === 2) {
+            const currentDistance = this.calculateDistance(event.touches);
+            const scaleFactor = currentDistance / initialDistance;
+            const newWidth = initialWidth * scaleFactor;
+            // Limitar o zoom máximo e mínimo para evitar distorção excessiva
+            if (newWidth >= 100 && newWidth <= 1000) {
+                img.style.width = newWidth + 'px';
+            }
+            event.preventDefault(); // Evitar zoom da página inteira
+        }
+    });
+  }
+
+  calculateDistance(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+}
+
+customElements.define('pinch-zoom', PinchZoom);

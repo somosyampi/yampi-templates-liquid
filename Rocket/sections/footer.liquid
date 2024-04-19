@@ -1,4 +1,4 @@
-{{ "footer.css" | asset_url | stylesheet_tag }}
+<link href="{{ 'footer.css' | asset_url }}" rel="stylesheet">
 <script src="{{ 'footer.js' | asset_url }}" defer="defer"></script>
 
 {% liquid
@@ -38,7 +38,7 @@
   assign email = company.email
   assign social_medias = company_social_media
   assign phone_number = company.phone.number
-  assign whatsapp_number = company.whatsapp.number
+  assign whatsapp_number = company.whatsapp.formated_number
   
   assign show_email = section.settings.show_email and email
   assign show_phone = section.settings.show_phone and phone_number
@@ -58,8 +58,8 @@
   style="
     --footer-font-color: {{ section.settings.text_color }};
     --footer-bg-color: {{ section.settings.background_color }};
-    --footer-opacity-color: {{ section.settings.text_color | hex_to_rgba: 0.5 }};
-    --footer-hr-color: {{ section.settings.text_color | hex_to_rgba: 0.1 }};
+    --footer-opacity-color: rgba(34, 34, 34, 0.5);
+    --footer-hr-color: rgba(34, 34, 34, 0.1);
   "
 >
   {% if section.settings.newsletter_enabled %}
@@ -72,7 +72,7 @@
             <input
               id="newsletter-email"
               type="email"
-              name="newsletter-email"
+              name="email"
               placeholder="Digite seu e-mail"
             />
           </div>
@@ -154,7 +154,7 @@
                           class="flex -vcenter"
                         >
                           {% render 'icon-whatsapp' %}
-                          {{ whatsapp_number | mask: '## #########' }}
+                          {{ whatsapp_number }}
                         </a>
                       </li>
                     {% endif %} 
@@ -167,7 +167,7 @@
                           rel="noreferrer"
                         >
                           {% render 'icon-phone' %}
-                          {{ company.phone.number | mask: '## #########' }}
+                          {{ company.phone.formated_number }}
                         </a>
                       </li>
                     {% endif %} 
@@ -258,7 +258,7 @@
               <span>
                 {{ company_address.street }} 
                 {{ company_address.number }} 
-                {{ company_address.complement | append: ', ' if company_address.complement }}
+                {{ company_address.complement }}
               </span>
     
               <span class="divisor"> - </span>

@@ -177,6 +177,9 @@ class ModalDialog extends HTMLElement {
   }
 
   openModal(source = undefined) {
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.marginRight = `${scrollbarWidth}px`;
+    document.getElementsByTagName('body')[0].classList.add('no-scroll');
     this.classList.add('active');
     if (source) {
       this.source = source;
@@ -184,6 +187,8 @@ class ModalDialog extends HTMLElement {
   }
 
   closeModal() {
+    document.getElementsByTagName('body')[0].classList.remove('no-scroll');
+    document.body.style.marginRight = `0px`;
     this.classList.remove('active');
   }
 }
@@ -196,14 +201,11 @@ class ZoomModal extends ModalDialog {
   }
 
   openModal(source = undefined) {
-    this.classList.add('active');
-    if (source) {
-      this.source = source;
-    }
+    super.openModal();
 
     const img = this.querySelector('img');
 
-    img.src = this.source.src;
+    img.src = source.src;
   }
 }
 
