@@ -235,35 +235,74 @@ class ShippingForm extends HTMLElement {
     this.form.addEventListener('submit', this.onFormSubmit.bind(this));
   }
 
-  onFormSubmit(event) {
+  async onFormSubmit(event) {
     event.preventDefault();
+    const button = this.querySelector('button');
+    button.classList.add('sending');
     const optionId = this.dataset.optionId;
     const quantity = 1;
     const zipcode = this.querySelector('input#zipcode').value;
     const total = this.dataset.productPrice;
     const route = `${window.Yampi.bart_url}/api/v1/shipping/calculate?product_option_id[]=${optionId}&quantity[]=${quantity}&zipcode=${zipcode}&total=${total}`;
-    
-    fetch(route)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Erro na solicitação: ${response.status}`);
-        }
 
-        return response.json();
-      }).then(response => {
-        this.renderResponse(response);
-      }).catch((error) => {
-        console.error(error);
-      })
+    try {
+      this.clearError();
+      const response = await fetch(route);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        const error = new Error(data.message);
+        error.name = "";
+        throw error;
+      }
+
+      this.renderResponse(data);
+    } catch (error) {
+      this.setError(error)
+    } finally {
+      button.classList.remove('sending');
+    }
   }
 
   renderResponse(data) {
     this.quotes = Object.values(data);
+
+    const hasCustomShipping = this.dataset.customShipping;
+
+    let deliveryTime = 0;
+
     const firstQuote = this.quotes[0];
+
+    if (hasCustomShipping) {
+      this.quotes.forEach(shippingOption => {
+        if (shippingOption.delivery_time > deliveryTime) {
+          deliveryTime = shippingOption.delivery_time
+        }
+      });
+      
+      this.quotes = [
+        {
+          service_display_name: 'FRETE',
+          service_id: 'shipping_custom',
+          service_name: 'shipping_custom',
+          service_type_name: 'shipping_custom',
+          id: 'shipping_custom',
+          quote_id: 'shipping_custom',
+          real_price: this.dataset.shippingPrice,
+          formated_price: parseFloat(this.dataset.shippingPrice)
+              ? numberToBRL(parseFloat(this.dataset.shippingPrice))
+              : 'Grátis',
+         delivery_time: deliveryTime,
+         formated_delivery_time: 'até ' + deliveryTime + ' dias úteis'
+          
+        }
+      ]
+    }
     
     const modalBody = document.getElementById('modal-shipping');
 
-    modalBody.querySelector('.selected-zipcode').textContent = firstQuote.zipcode;
+    modalBody.querySelector('.selected-zipcode').textContent = maskCep(firstQuote.zipcode);
     modalBody.querySelector('.selected-city').textContent = `${firstQuote.city} - ${firstQuote.uf}`;
 
     const template = `
@@ -291,6 +330,31 @@ class ShippingForm extends HTMLElement {
 
   handleInputChange(event) {
     event.target.value = maskCep(event.target.value);
+  }
+
+  setError(message) {
+    const input = this.querySelector('input');
+    input.classList.add('error');
+
+    const errorElement = document.createElement('div');
+    errorElement.classList.add('error-text');
+    errorElement.textContent = message;
+
+    input.parentElement.appendChild(errorElement);
+  }
+
+  clearError() {
+    const input = this.querySelector('input');
+    input.classList.remove('error');
+
+    const holderInput = input.parentElement;
+    const textError = holderInput.querySelector('.error-text');
+
+    if (!textError) {
+      return;
+    }
+    
+    holderInput.removeChild(textError);
   }
 }
 

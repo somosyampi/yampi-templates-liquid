@@ -36,6 +36,7 @@
     "empty_cart_text_button": "Comprar agora!",
     "cart_type": "dropdown",
     "show_cart_savings": true,
-    "show_product_cart_savings":true
+    "show_product_cart_savings": true,
+    "show_modal_after_purchase": true
   }
 }

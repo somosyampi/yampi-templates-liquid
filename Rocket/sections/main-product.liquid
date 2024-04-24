@@ -84,7 +84,7 @@
         {% endif %}
       </div>
     {% endif %}
-    {% if section.settings.show_warranty and product.warranty %}
+    {% if section.settings.show_warranty and product.warranty > 0 %}
       <div class="main-product-guarantee">
         Garantia:
         <span>
@@ -141,7 +141,9 @@
         <product-customization>
         </product-customization>
       {% endif %}
-      <product-form>
+      <product-form
+        data-show-modal="{{ settings.show_modal_after_purchase }}"  
+      >
         {% if product.has_variations %}
           <select-sku>
             <div class="sku-select">

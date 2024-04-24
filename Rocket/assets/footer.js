@@ -20,7 +20,7 @@ class FormNewsletter extends HTMLElement {
       }
     }
     
-    const url = '/api/v1/leads';
+    const url = `${window.Yampi.bart_url}/api/v1/leads`;
 
     try {
       const response = await fetch(url, {

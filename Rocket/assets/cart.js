@@ -12,6 +12,14 @@ class MiniCart extends HTMLElement {
       if (event.source === 'mini-cart') {
         return;
       }
+      if (this.tagName === 'DROPDOWN-CART') {
+        const showModal = this.dataset.showModal;
+        if (showModal) {
+          const modal = document.getElementById('modal-added-to-cart');
+          modal.openModal();
+        }
+      }
+      
       this.fetchCart();
       if (this.tagName === 'SIDE-CART') {
         this.openCart();

@@ -86,7 +86,7 @@ class ModalReview extends ModalDialog {
     formData.append('product_id', productId);
     formData.append('merchant_alias', window.Yampi.merchant_alias);
 
-    const url = '/api/v1/form/review';
+    const url = `${window.Yampi.bart_url}/api/v1/form/review`;
 
     fetch(url, {
       method: 'POST',
@@ -147,7 +147,7 @@ class ModalQuestion extends ModalDialog {
     formData.append('merchant_alias', window.Yampi.merchant_alias);
     formData.append('product_id', productId);
 
-    const url = '/api/v1/form/comments';
+    const url = `${window.Yampi.bart_url}/api/v1/form/comments`;
 
     fetch(url, {
       method: 'POST',

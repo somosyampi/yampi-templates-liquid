@@ -494,6 +494,10 @@ dropdown-cart hr {
   margin: 0;
 }
 
+dropdown-cart .product-cart-box__container {
+  max-width: calc(var(--width) - 2px - 2* var(--side-padding));
+}
+
 .side-cart-subtotal-after-discounts {
   color: var(--color-general-primary);
   font-size: var(--font-16);
