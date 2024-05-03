@@ -266,7 +266,7 @@
       {
         "type": "checkbox",
         "id": "show_modal_after_purchase",
-        "label": "Mostrar modal de 'Produtos adicionados ao carrinho' ao clicar no botão comprar",
+         "label": "Mostrar modal de 'Produtos adicionados ao carrinho' ao clicar no botão comprar",
         "default": true
       }
     ]

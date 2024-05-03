@@ -63,7 +63,6 @@
   .main-product-images-nav .video-thumb:hover {
     border-color: var(--black-dark);
   }
-
 }
 
 .main-product-images-nav .video-thumb .-text {
@@ -81,7 +80,7 @@
 
 .main-product-image .carousel-pagination {
   position: absolute;
-  bottom: -40px;
+  bottom: 17px;
   left: 0;
   width: 100%;
 }
@@ -423,6 +422,28 @@ inventory-countdown {
     height: auto;
     aspect-ratio: 1/1;
     object-fit: contain;
+  }
+
+  .main-product-image .carousel-pagination {
+    bottom: -29px;
+  }
+
+  .main-product-image .total-images-indicator {
+    display: block !important;
+    top: 16px;
+    right: 16px;
+    position: absolute;
+    padding: 4px 10px;
+    color: #FFF;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    background-color: rgba(34, 34, 34, 0.6);
+    border-radius: var(--theme-border-radius);
+  }
+
+  .main-product-image .total-images-indicator .active {
+    font-weight: var(--font-bold);
   }
   
   .main-product-images-nav {

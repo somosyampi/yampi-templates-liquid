@@ -13,6 +13,10 @@ class SliderComponent extends HTMLElement {
     this.navItems = document.querySelectorAll('.carousel-thumbs .thumb-item');
     this.navItems.forEach((item) => item.addEventListener('click', this.handleNavClick.bind(this)));
 
+    const dots = this.querySelectorAll('.dots .dot');
+
+    dots.forEach((dot) => dot.addEventListener('click', this.handleDotClick.bind(this)));
+
     this.init();
 
     const resizeObserver = new ResizeObserver((entries) => {
@@ -63,8 +67,7 @@ class SliderComponent extends HTMLElement {
     this.sliderItems[this.actualSlide].classList.add('is-active');
     this.blockNavigationButtons();
 
-    // this.querySelector('.carousel-controls .current').textContent = Math.min(this.actualSlide, this.sliderItems.length);
-
+    this.querySelector('.total-images-indicator .active').textContent = this.actualSlide + 1;
   }
 
   blockNavigationButtons() {
@@ -79,6 +82,13 @@ class SliderComponent extends HTMLElement {
     } else {
       this.nextButton.removeAttribute('disabled');
     }
+  }
+
+  handleDotClick(event) {
+    const index = parseInt(event.target.dataset.index);
+    const position = this.offset * index;
+
+    this.showSlide(position);
   }
 }
 

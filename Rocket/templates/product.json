@@ -21,14 +21,14 @@
     "similar-products-1": {   
       "type": "similar-products",
       "settings": {
-        "title": "Sem carrossel",
+        "title": "Produtos Relacionados - Sem carrossel",
         "desktop_layout": "grid"
       }
     },
     "similar-products-2": {   
       "type": "similar-products",
       "settings": {
-        "title": "Com carrossel",
+        "title": "Produtos Relacionados",
         "desktop_layout": "carousel"
       }
     },
@@ -57,10 +57,9 @@
   "order": [
     "header",
     "main-product",
-    "description",
     "product-video",
+    "description",
     "combo-products",
-    "similar-products-1",
     "similar-products-2",
     "product-reviews",
     "footer"

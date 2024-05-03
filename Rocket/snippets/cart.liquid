@@ -2,8 +2,10 @@
 
 <div class="mini-cart-holder">
   <div class="dropdown-holder">
-    {% render 'icon-cart' %}
-    <span class="cart-quantity">0</span>
+    <div class="holder-cart-icon">
+      {% render 'icon-cart' %}
+      <span class="cart-quantity">0</span>
+    </div>
     {% if settings.cart_type == 'dropdown' %}
       {% render 'dropdown-cart' %}
     {% endif %}
@@ -85,3 +87,14 @@
 </template>
 
 {% render 'modal-product-added-to-cart' %}
+
+<script>
+  const cartHolder = document.querySelector('.holder-cart-icon');
+  const cartType = 'dropdown';
+  
+  if (cartType === 'dropdown') {
+    cartHolder.addEventListener('click', (event) => {
+      window.location.assign(window.routes.checkout_url);
+    });
+  }
+</script>

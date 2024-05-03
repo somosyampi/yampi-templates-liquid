@@ -90,12 +90,6 @@
     font-size: var(--font-11);
     line-height: 13px;
   }
-
-  .dropdown-holder:hover > .dropdown {
-  	opacity: 1;
-  	visibility: visible;
-  	transition: visibility 0s, opacity 0s linear;
-  }
 }
 
 @media (max-width: 576px) {

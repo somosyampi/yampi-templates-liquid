@@ -12,19 +12,21 @@
 <section class="main-product-holder container">
   <div class="main-product-images">
     <div class="main-product-images-nav carousel-thumbs">
-      <ul>
-        {% for image in product.images.data %}
-          <li class="thumb-item" data-index="{{ forloop.index0 }}">
-            <img src="{{ thumbor_url }}/{{ image.url }}" class="thumb-image" />
-          </li>
-        {% endfor %}
-        <smooth-scroller class="smooth-element" data-target="#holder-main-product-video">
-          <div class="video-thumb">
-            {% render 'icon-video' %}
-            <div class="-text">VÍDEO</div>
-          </div>
-        </smooth-scroller>
-      </ul>
+      <product-gallery>
+        <ul>
+          {% for image in product.skus.data[0].images.data %}
+            <li class="thumb-item" data-index="{{ forloop.index0 }}">
+              <img src="{{ thumbor_url }}/{{ image.url }}" class="thumb-image" />
+            </li>
+          {% endfor %}
+          <smooth-scroller class="smooth-element" data-target="#holder-main-product-video">
+            <div class="video-thumb">
+              {% render 'icon-video' %}
+              <div class="-text">VÍDEO</div>
+            </div>
+          </smooth-scroller>
+        </ul>
+      </product-gallery>
     </div>
     <div class="main-product-image">
       <slider-component>
@@ -46,10 +48,14 @@
           <div class="carousel-pagination {% if product.images.data.size == 1 %}hide{% endif %}">
             <div class="dots">
               {% for image in product.images.data %}
-                <span class="dot"></span>
+                <span class="dot" data-index="{{ forloop.index0 }}"></span>
               {% endfor %}
             </div>
           </div>
+        <div class="total-images-indicator mobile">
+          <span class="active">1</span>
+          <span class="total"> / {{ product.images.data.size }}</span>
+        </div>
       </slider-component>
     </div>
   </div>

@@ -17,36 +17,44 @@
               {% for product in similars %}
                 <div class="box-product-wrapper">
                   <div class="box-product">
-                    <div class="holder-image relative-tags">
-                      <div class="image-ratio">
-                        <img
-                          src="{{ product.images.data[0].url }}"
-                          width="auto"
-                          height="auto"
-                          alt="{{ product.name }}"
-                        />
+                    <a href="{{ product.url_path }}" class="block -clean">
+                      <div class="holder-image relative-tags">
+                        {% if product.prices.data.percent_discount > 0 %}
+                          <div class="discount-tag">
+                            <span>{{ product.prices.data.percent_discount | round }}</span>
+                          </div>
+                        {% endif %}
+                          
+                        <div class="image-ratio">
+                          <img
+                            src="{{ product.images.data[0].url }}"
+                            width="auto"
+                            height="auto"
+                            alt="{{ product.name }}"
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div class="holder-info">
-                      <div class="product-name ellipsis-multiline l2">
-                        {{ product.name }}
-                      </div>
-                      <div class="product-prices">
-                        <div class="flex -vcenter -wrap">
-                          {% if product.prices.data.has_promotion %}
-                            <span class="product-old-price old-price">
-                              {{ product.prices.data.price_sale_formated }}
+                      <div class="holder-info">
+                        <div class="product-name ellipsis-multiline l2">
+                          {{ product.name }}
+                        </div>
+                        <div class="product-prices">
+                          <div class="flex -vcenter -wrap">
+                            {% if product.prices.data.has_promotion %}
+                              <span class="product-old-price old-price">
+                                {{ product.prices.data.price_sale_formated }}
+                              </span>
+                            {% endif %}
+                            <span class="product-actual-price price">
+                              {{ product.prices.data.price_formated }} 
                             </span>
-                          {% endif %}
-                          <span class="product-actual-price price">
-                            {{ product.prices.data.price_formated }} 
-                          </span>
-                        </div>
-                        <div class="installment-text">
-                          {{ product.prices.data.installments.data.text }}
+                          </div>
+                          <div class="installment-text">
+                            {{ product.prices.data.installments.data.text }}
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </a>
                   </div>
                 </div>
               {% endfor %}

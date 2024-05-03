@@ -514,6 +514,13 @@ class SelectSku extends HTMLElement {
     if (sku.customizations.data.length) {
       this.insertCustomizationBox();
     }
+
+    this.dispatchEvent(
+      new CustomEvent("skuSelected", {
+        bubbles: true,
+        detail: { sku: this.selectedSku },
+      }),
+    );
     
     return true;
   }
@@ -746,3 +753,41 @@ class PinchZoom extends HTMLElement {
 }
 
 customElements.define('pinch-zoom', PinchZoom);
+
+class ProductGallery extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    const selectSku = document.querySelector('product-form select-sku');
+    selectSku.addEventListener('skuSelected', this.handleSkuChange.bind(this));
+  }
+
+  handleSkuChange(event) {
+    const images = event.detail.sku.images.data;
+    this.refreshImages(images);
+    
+    console.log(event);
+  }
+
+  refreshImages(images) {
+    const holder = this.querySelector('ul');
+    
+    holder.innerHTML = '';
+
+    images.forEach((image, index) => {
+      const template = `
+        <li class="thumb-item" data-index="${index}">
+          <img src="${image.url}" class="thumb-image">
+        </li>
+      `;
+
+      console.log(template);
+
+      holder.appendChild(htmlToElement(template));
+    });
+  }
+}
+
+customElements.define('product-gallery', ProductGallery);
