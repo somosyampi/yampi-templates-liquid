@@ -48,6 +48,16 @@ const compareNumber = (a, b) => a - b;
 
 const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
 
+const maskCep = (cep) => {
+  cep = cep.replace(/\D/g, '');
+
+  if (cep.length > 5) {
+    cep = cep.substring(0, 5) + '-' + cep.substring(5, 8);
+  }
+
+  return cep;
+}
+
 class BaseInstallments extends HTMLElement {
   constructor() {
     super();
@@ -220,29 +230,131 @@ class ShippingForm extends HTMLElement {
 
   connectedCallback() {
     this.form = this.querySelector('form');
+    this.querySelector('input').addEventListener('input', this.handleInputChange.bind(this));
 
     this.form.addEventListener('submit', this.onFormSubmit.bind(this));
   }
 
-  onFormSubmit(event) {
+  async onFormSubmit(event) {
     event.preventDefault();
-    const optionId = '15443857';
+    const button = this.querySelector('button');
+    button.classList.add('sending');
+    const optionId = this.dataset.optionId;
     const quantity = 1;
-    const zipcode = '14945196';
-    const total = 35;
-    const route = `https://logistics.yampi.io/api/v1/shipping/calculate?product_option_id[]=${optionId}=&quantity[]=${quantity}&zipcode=${zipcode}&total=${total}`;
-    
-    fetch(route)
-      .then((response) => response.json())
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Erro na solicitação: ${response.status}`);
+    const zipcode = this.querySelector('input#zipcode').value;
+    const total = this.dataset.productPrice;
+    const route = `${window.Yampi.bart_url}/api/v1/shipping/calculate?product_option_id[]=${optionId}&quantity[]=${quantity}&zipcode=${zipcode}&total=${total}`;
+
+    try {
+      this.clearError();
+      const response = await fetch(route);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        const error = new Error(data.message);
+        error.name = "";
+        throw error;
+      }
+
+      this.renderResponse(data);
+    } catch (error) {
+      this.setError(error)
+    } finally {
+      button.classList.remove('sending');
+    }
+  }
+
+  renderResponse(data) {
+    this.quotes = Object.values(data);
+
+    const hasCustomShipping = this.dataset.customShipping;
+
+    let deliveryTime = 0;
+
+    const firstQuote = this.quotes[0];
+
+    if (hasCustomShipping) {
+      this.quotes.forEach(shippingOption => {
+        if (shippingOption.delivery_time > deliveryTime) {
+          deliveryTime = shippingOption.delivery_time
         }
-        
-        const data = response;
-      }).catch((error) => {
-        console.error(error);
-      })
+      });
+      
+      this.quotes = [
+        {
+          service_display_name: 'FRETE',
+          service_id: 'shipping_custom',
+          service_name: 'shipping_custom',
+          service_type_name: 'shipping_custom',
+          id: 'shipping_custom',
+          quote_id: 'shipping_custom',
+          real_price: this.dataset.shippingPrice,
+          formated_price: parseFloat(this.dataset.shippingPrice)
+              ? numberToBRL(parseFloat(this.dataset.shippingPrice))
+              : 'Grátis',
+         delivery_time: deliveryTime,
+         formated_delivery_time: 'até ' + deliveryTime + ' dias úteis'
+          
+        }
+      ]
+    }
+    
+    const modalBody = document.getElementById('modal-shipping');
+
+    modalBody.querySelector('.selected-zipcode').textContent = maskCep(firstQuote.zipcode);
+    modalBody.querySelector('.selected-city').textContent = `${firstQuote.city} - ${firstQuote.uf}`;
+
+    const template = `
+      <tr>
+          <th>Tipo</th>
+          <th>Prazo</th>
+          <th>Valor</th>
+      </tr>
+
+      <tr>
+        ${this.quotes.map(quote => {
+          return `
+            <td>${ quote.service_display_name }</td>
+            <td>${ quote.formated_delivery_time }</td>
+            <td class="price">${ quote.formated_price }</td>
+          `
+        }).join('')}
+      </tr>
+    `;
+
+    modalBody.querySelector('.modal-content table').innerHTML = template.trim();
+    
+    modalBody.openModal();
+  }
+
+  handleInputChange(event) {
+    event.target.value = maskCep(event.target.value);
+  }
+
+  setError(message) {
+    const input = this.querySelector('input');
+    input.classList.add('error');
+
+    const errorElement = document.createElement('div');
+    errorElement.classList.add('error-text');
+    errorElement.textContent = message;
+
+    input.parentElement.appendChild(errorElement);
+  }
+
+  clearError() {
+    const input = this.querySelector('input');
+    input.classList.remove('error');
+
+    const holderInput = input.parentElement;
+    const textError = holderInput.querySelector('.error-text');
+
+    if (!textError) {
+      return;
+    }
+    
+    holderInput.removeChild(textError);
   }
 }
 
@@ -284,7 +396,7 @@ class ProductForm extends HTMLElement {
     return values;
   }
 
-  onFormSubmit(event) {
+  async onFormSubmit(event) {
     event.preventDefault();
 
     if (!this.allVariantsSelected()) {
@@ -322,16 +434,30 @@ class ProductForm extends HTMLElement {
       store_token: window.Yampi.store_token
     }
 
-    fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    }).then(response => {
-      return response.json();
-    }).then(response => {
-      publish(EVENTS.cartUpdate, { source: 'product-form', productOptionId: itemId, cartData: response });
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      console.log(response);
+
+      const cartData = await response.json();
+
+      console.log(cartData);
+
+      console.log(cartData.message[0].message);
+
+      if (!response.ok) {
+        throw new Error(cartData.message[0].message);
+      }
+
+      publish(EVENTS.cartUpdate, { source: 'product-form', productOptionId: itemId, cartData });
       event.submitter.classList.remove('sending');
-    });
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 
@@ -370,13 +496,14 @@ class SelectSku extends HTMLElement {
   }
 
   checkIfIsValidSku(sku) {
-    if (!sku || sku.blocked_sale) {
-      return false;
-    }
-
     window.selectedSku = sku;
     const optionToCart = document.getElementById('option-to-cart');
     optionToCart.value = sku.id;
+    
+    if (!sku || sku.blocked_sale) {
+      console.log('!sku || sku.blocked_sale');
+      return false;
+    }
 
     const previousCustomization = document.querySelector('product-customization');
 
@@ -387,6 +514,13 @@ class SelectSku extends HTMLElement {
     if (sku.customizations.data.length) {
       this.insertCustomizationBox();
     }
+
+    this.dispatchEvent(
+      new CustomEvent("skuSelected", {
+        bubbles: true,
+        detail: { sku: this.selectedSku },
+      }),
+    );
     
     return true;
   }
@@ -578,3 +712,82 @@ class ProductCustomization extends HTMLElement {
 }
 
 customElements.define('product-customization', ProductCustomization);
+
+class PinchZoom extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    let initialDistance = 0;
+    let initialWidth = 0;
+
+    const img = this.querySelector('#modal-product-zoom img');
+
+    img.addEventListener('touchstart', (event) => {
+        if (event.touches.length === 2) {
+            initialDistance = this.calculateDistance(event.touches);
+            initialWidth = parseInt(window.getComputedStyle(img).getPropertyValue('width'));
+        }
+    });
+    
+    img.addEventListener('touchmove', (event) => {
+        if (event.touches.length === 2) {
+            const currentDistance = this.calculateDistance(event.touches);
+            const scaleFactor = currentDistance / initialDistance;
+            const newWidth = initialWidth * scaleFactor;
+            // Limitar o zoom máximo e mínimo para evitar distorção excessiva
+            if (newWidth >= 100 && newWidth <= 1000) {
+                img.style.width = newWidth + 'px';
+            }
+            event.preventDefault(); // Evitar zoom da página inteira
+        }
+    });
+  }
+
+  calculateDistance(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+}
+
+customElements.define('pinch-zoom', PinchZoom);
+
+class ProductGallery extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    const selectSku = document.querySelector('product-form select-sku');
+    selectSku.addEventListener('skuSelected', this.handleSkuChange.bind(this));
+  }
+
+  handleSkuChange(event) {
+    const images = event.detail.sku.images.data;
+    this.refreshImages(images);
+    
+    console.log(event);
+  }
+
+  refreshImages(images) {
+    const holder = this.querySelector('ul');
+    
+    holder.innerHTML = '';
+
+    images.forEach((image, index) => {
+      const template = `
+        <li class="thumb-item" data-index="${index}">
+          <img src="${image.url}" class="thumb-image">
+        </li>
+      `;
+
+      console.log(template);
+
+      holder.appendChild(htmlToElement(template));
+    });
+  }
+}
+
+customElements.define('product-gallery', ProductGallery);

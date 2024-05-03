@@ -1,69 +1,77 @@
-{{ 'collection.css' | asset_url | stylesheet_tag }}
-{{ 'products-list.css' | asset_url | stylesheet_tag }}
-{{ 'box-product.css' | asset_url | stylesheet_tag }}
-
-<section class="collection similar-products">
-  <div>
-    <div class="container holder-collection">
-      <div class="flex -between">
-        <div class="holder-left flex -vcenter">
-          <h2 class="theme-title collection-name">{{ section.settings.title }}</h2>
+{% if similars.size > 0 %}
+  <link href="{{ 'collection.css' | asset_url }}" rel="stylesheet">
+  <link href="{{ 'products-list.css' | asset_url }}" rel="stylesheet">
+  <link href="{{ 'box-product.css' | asset_url }}" rel="stylesheet">
+   
+  <section class="collection similar-products">
+    <div>
+      <div class="container holder-collection">
+        <div class="flex -between">
+          <div class="holder-left flex -vcenter">
+            <h2 class="theme-title collection-name">{{ section.settings.title }}</h2>
+          </div>
         </div>
-      </div>
-      <div class="products-list">
-        <{% if section.settings.desktop_layout == 'carousel' %}carousel-component{% else %}div{% endif %} class="flex -wrap" data-margin="32px" data-items="4">
-          <div class="carousel-track">
-            {% for product in similars %}
-              <div class="box-product-wrapper">
-                <div class="box-product">
-                  <div class="holder-image relative-tags">
-                    <div class="image-ratio">
-                      <img
-                        src="{{ product.images.data[0].url }}"
-                        width="auto"
-                        height="auto"
-                        alt="{{ product.name }}"
-                      />
-                    </div>
-                  </div>
-                  <div class="holder-info">
-                    <div class="product-name ellipsis-multiline l2">
-                      {{ product.name }}
-                    </div>
-                    <div class="product-prices">
-                      <div class="flex -vcenter -wrap">
-                        {% if product.prices.data.has_promotion %}
-                          <span class="product-old-price old-price">
-                            {{ product.prices.data.price_sale_formated }}
-                          </span>
+        <div class="products-list">
+          <{% if section.settings.desktop_layout == 'carousel' %}carousel-component{% else %}div{% endif %} data-margin="32px" data-items="4">
+            <div class="carousel-track">
+              {% for product in similars %}
+                <div class="box-product-wrapper">
+                  <div class="box-product">
+                    <a href="{{ product.url_path }}" class="block -clean">
+                      <div class="holder-image relative-tags">
+                        {% if product.prices.data.percent_discount > 0 %}
+                          <div class="discount-tag">
+                            <span>{{ product.prices.data.percent_discount | round }}</span>
+                          </div>
                         {% endif %}
-                        <span class="product-actual-price price">
-                          {{ product.prices.data.price_formated }} 
-                        </span>
+                          
+                        <div class="image-ratio">
+                          <img
+                            src="{{ product.images.data[0].url }}"
+                            width="auto"
+                            height="auto"
+                            alt="{{ product.name }}"
+                          />
+                        </div>
                       </div>
-                      <div class="installment-text">
-                        {{ product.prices.data.installments.data.text }}
+                      <div class="holder-info">
+                        <div class="product-name ellipsis-multiline l2">
+                          {{ product.name }}
+                        </div>
+                        <div class="product-prices">
+                          <div class="flex -vcenter -wrap">
+                            {% if product.prices.data.has_promotion %}
+                              <span class="product-old-price old-price">
+                                {{ product.prices.data.price_sale_formated }}
+                              </span>
+                            {% endif %}
+                            <span class="product-actual-price price">
+                              {{ product.prices.data.price_formated }} 
+                            </span>
+                          </div>
+                          <div class="installment-text">
+                            {{ product.prices.data.installments.data.text }}
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </a>
                   </div>
                 </div>
-              </div>
-            {% endfor %}
-          </div>
-
-          {% if section.settings.desktop_layout == 'carousel' %}
-            <div class="carousel-controls">
-              <button name="prev" class="prev-button">{% render 'icon-arrow' %}</button>
-              <button name="next" class="next-button">{% render 'icon-arrow' %}</button>
+              {% endfor %}
             </div>
-          {% endif %} 
-        </carousel-component>
+  
+            {% if section.settings.desktop_layout == 'carousel' %}
+              <div class="carousel-controls">
+                <button name="prev" class="prev-button">{% render 'icon-arrow' %}</button>
+                <button name="next" class="next-button">{% render 'icon-arrow' %}</button>
+              </div>
+            {% endif %} 
+          </carousel-component>
+        </div>
       </div>
     </div>
-  </div>
-  
-  {% render 'collection', products: product.similars %}
-</section>
+  </section>
+{% endif %}
 
 {% schema %}
 {

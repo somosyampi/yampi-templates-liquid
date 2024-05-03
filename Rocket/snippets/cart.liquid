@@ -1,9 +1,11 @@
-{{ 'cart.css' | asset_url | stylesheet_tag }}
+<link href="{{ 'cart.css' | asset_url }}" rel="stylesheet">
 
 <div class="mini-cart-holder">
   <div class="dropdown-holder">
-    {% render 'icon-cart' %}
-    <span class="cart-quantity">0</span>
+    <div class="holder-cart-icon">
+      {% render 'icon-cart' %}
+      <span class="cart-quantity">0</span>
+    </div>
     {% if settings.cart_type == 'dropdown' %}
       {% render 'dropdown-cart' %}
     {% endif %}
@@ -15,54 +17,54 @@
 {% endif %}
 
 <template id="empty-cart">
-    {% style %}
-      .empty-cart {
-         padding: 69px 68px 64px;
-         text-align: center;
-         color: var(--black-light);
-         line-height: 1.4;
-         max-width: 100%;
-      }
-  
-       .empty-cart .-title {
-         font-size: var(--font-18);
-      }
-  
-       .empty-cart .-subtitle * {
-         font-size: var(--font-15);
-         color: var(--black-light);
-      }
-  
-       .empty-cart .icon {
-         margin-bottom: 19px;
-      }
-  
-       .empty-cart .-cta-holder {
-         display: flex;
-         justify-content: center;
-      }
-  
-       .empty-cart .-cta {
-         background-color: var(--black-medium);
-         border-radius: var(--theme-border-radius);
-         color: var(--white);
-         cursor: pointer;
-         display: flex;
-         font-weight: var(--font-bold);
-         justify-content: center;
-         margin-top: 25px;
-         max-width: 280px;
-         padding: 18px 17px;
-         text-decoration: none;
-         text-transform: uppercase;
-         transition: opacity 0.3s;
-         width: 100%;
-      }
-  
-       .empty-cart .-cta:hover {
-         opacity: var(--default-opacity);
-      }
-    {% endstyle %}
+  <style>
+    .empty-cart {
+      padding: 69px 68px 64px;
+      text-align: center;
+      color: var(--black-light);
+      line-height: 1.4;
+      max-width: 100%;
+    }
+    
+    .empty-cart .-title {
+      font-size: var(--font-18);
+    }
+    
+    .empty-cart .-subtitle * {
+      font-size: var(--font-15);
+      color: var(--black-light);
+    }
+    
+    .empty-cart .icon {
+      margin-bottom: 19px;
+    }
+    
+    .empty-cart .-cta-holder {
+      display: flex;
+      justify-content: center;
+    }
+    
+    .empty-cart .-cta {
+      background-color: var(--black-medium);
+      border-radius: var(--theme-border-radius);
+      color: var(--white);
+      cursor: pointer;
+      display: flex;
+      font-weight: var(--font-bold);
+      justify-content: center;
+      margin-top: 25px;
+      max-width: 280px;
+      padding: 18px 17px;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: opacity 0.3s;
+      width: 100%;
+    }
+    
+    .empty-cart .-cta:hover {
+      opacity: var(--default-opacity);
+    }
+  </style>
   
     <div class="empty-cart">
       {% render 'icon-empty-cart' %}
@@ -83,3 +85,16 @@
       </div>
     </div>
 </template>
+
+{% render 'modal-product-added-to-cart' %}
+
+<script>
+  const cartHolder = document.querySelector('.holder-cart-icon');
+  const cartType = 'dropdown';
+  
+  if (cartType === 'dropdown') {
+    cartHolder.addEventListener('click', (event) => {
+      window.location.assign(window.routes.checkout_url);
+    });
+  }
+</script>

@@ -5,7 +5,7 @@
   width: 55px;
 }
 
-.mini-cart-holder .dropdown-holder {
+.mini-cart-holder .holder-cart-icon {
   display: flex;
   padding: 10px 0;
   cursor: pointer;
@@ -494,6 +494,10 @@ dropdown-cart hr {
   margin: 0;
 }
 
+dropdown-cart .product-cart-box__container {
+  max-width: calc(var(--width) - 2px - 2* var(--side-padding));
+}
+
 .side-cart-subtotal-after-discounts {
   color: var(--color-general-primary);
   font-size: var(--font-16);
@@ -641,6 +645,10 @@ dropdown-cart hr {
 }
 
 @media screen and (max-width: 700px) {
+  .mini-cart-holder .dropdown {
+    display: none;
+  }
+  
   .side-cart-header {
     padding: 13px 20px 11px;
   }

@@ -11,9 +11,8 @@
     </div>
 
     <ul>
-      {% for category in featured_categories %}
-        <li
-          class="dropdown-holder item-category {{ category.slug }} {% if category.children.size > 0 -%} has-subcategory {%- endif -%}">
+      {% for category in categories %}
+        <li is="category-dropdown" class="dropdown-holder item-category {{ category.slug }} {% if category.children.size > 0 -%} has-subcategory {%- endif -%}">
           <a class="block" href="{{ category.url_path }}">
             {{ category.name }}
             {% if category.children.size > 0 %}

@@ -262,6 +262,12 @@
         "id": "show_product_cart_savings",
         "label": "Mostrar selo R$ mais barato",
         "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_modal_after_purchase",
+         "label": "Mostrar modal de 'Produtos adicionados ao carrinho' ao clicar no botão comprar",
+        "default": true
       }
     ]
   }
