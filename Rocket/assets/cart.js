@@ -146,6 +146,8 @@ class MiniCart extends HTMLElement {
         elToInsert.parentNode.insertBefore(priceEl, elToInsert);
       }
 
+      console.log(item);
+
       if (this.dataset.showProductCartSavings && item.has_price_discount) {
         itemElement.querySelector('.product-cart-box__text--holder-info').appendChild(this.createDiscountTag(item));
       }

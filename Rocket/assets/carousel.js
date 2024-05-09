@@ -1,32 +1,70 @@
 class SliderComponent extends HTMLElement {
   constructor() {
     super();
+  }
+
+  connectedCallback() {
+    this.init();
+  }
+
+  init(recreate = false) {
+    if (recreate) {
+      setTimeout(() => {
+        console.log('recreate');
+        this.replaceWith(this.cloneNode(true));
+        this.navItems.forEach((item) => item.removeEventListener('click', this.handleNavClick.bind(this)));
+      }, 100);
+    }
+    
     this.carousel = this.querySelector('.carousel');
     this.sliderItems = this.carousel.querySelectorAll('.carousel-item');
     this.nextButton = this.querySelector('.next-button');
     this.prevButton = this.querySelector('.prev-button');
+    this.navItems = document.querySelectorAll('.carousel-thumbs .thumb-item');
+    const dots = this.querySelectorAll('.dots .dot');
+    const selectSku = document.querySelector('product-form select-sku');
 
     this.carousel.addEventListener('scroll', this.updateSlide.bind(this));
     this.nextButton.addEventListener('click', this.handleButtonClick.bind(this));
     this.prevButton.addEventListener('click', this.handleButtonClick.bind(this));
-
-    this.navItems = document.querySelectorAll('.carousel-thumbs .thumb-item');
+    selectSku.addEventListener('skuSelected', this.handleSkuChange.bind(this));
     this.navItems.forEach((item) => item.addEventListener('click', this.handleNavClick.bind(this)));
-
-    const dots = this.querySelectorAll('.dots .dot');
-
     dots.forEach((dot) => dot.addEventListener('click', this.handleDotClick.bind(this)));
-
-    this.init();
+    
+    this.refresh();
 
     const resizeObserver = new ResizeObserver((entries) => {
-      this.init();
+      this.refresh();
     });
 
     resizeObserver.observe(this.carousel);
   }
 
-  init() {
+  handleSkuChange(event) {
+    console.log('sku change');
+    const images = event.detail.sku.images.data;
+    this.refreshImages(images);
+  }
+
+  refreshImages(images) {
+    this.carousel.innerHTML = '';
+
+    images.forEach((image, index) => {
+      const template = `
+        <div class="carousel-item">
+          <modal-opener class="zoom-on-hover" data-modal="#modal-product-zoom">
+            <img src="${image.url}" class="normal" />
+          </modal-opener>
+        </div>
+      `;
+
+      this.carousel.appendChild(htmlToElement(template));
+    });
+
+    this.init(true);
+  }
+
+  refresh() {
     if (this.sliderItems.length === 1) {
       this.offset = this.sliderItems[0].offsetWidth;
     } else {

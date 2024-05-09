@@ -767,14 +767,12 @@ class ProductGallery extends HTMLElement {
   handleSkuChange(event) {
     const images = event.detail.sku.images.data;
     this.refreshImages(images);
-    
-    console.log(event);
   }
 
   refreshImages(images) {
-    const holder = this.querySelector('ul');
+    const holderThumbs = this.querySelector('ul');
     
-    holder.innerHTML = '';
+    holderThumbs.innerHTML = '';
 
     images.forEach((image, index) => {
       const template = `
@@ -783,9 +781,7 @@ class ProductGallery extends HTMLElement {
         </li>
       `;
 
-      console.log(template);
-
-      holder.appendChild(htmlToElement(template));
+      holderThumbs.appendChild(htmlToElement(template));
     });
   }
 }

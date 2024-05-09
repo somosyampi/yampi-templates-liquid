@@ -33,6 +33,7 @@ class ComboProduct extends HTMLElement {
   }
 
   handleSkuSelected(event) {
+    console.log('foo');
     const boxProduct = event.target.closest('.buy-together-product');
     boxProduct.dataset.sku = event.detail.sku.id;
   }
